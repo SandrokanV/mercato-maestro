@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercato Maestro — Transfer Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black-deep: #0a0e27;
+      --black-card: #111936;
+      --black-border: #1e2952;
+      --black-hover: #151e3f;
+      --purple-dim: #1e3a8a;
+      --purple-mid: #2563eb;
+      --purple-core: #3b82f6;
+      --purple-bright: #60a5fa;
+      --purple-pale: #93c5fd;
+      --purple-glow: rgba(59, 130, 246, 0.18);
+      --purple-glow2: rgba(96, 165, 250, 0.08);
+      --green-live: #10b981;
+      --green-dim: rgba(16, 185, 129, 0.12);
+      --amber-warn: #f59e0b;
+      --amber-dim: rgba(245, 158, 11, 0.12);
+      --red-neg: #ef4444;
+      --text-white: #e0e7ff;
+      --text-muted: #94a3b8;
+      --text-faint: #64748b;
+      --sidebar-w: 270px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--black-deep);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+    }
+    .sidebar {
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      background: var(--black-card);
+      border-right: 1px solid var(--black-border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+      overflow-y: auto;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--purple-dim); border-radius: 2px; }
+    .logo-block {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid var(--black-border);
+      position: relative;
+    }
+    .logo-svg {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      margin-bottom: 8px;
+    }
+    .logo-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      color: var(--purple-core);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      background: var(--green-dim);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 20px;
+      padding: 3px 9px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: var(--green-live);
+      letter-spacing: 0.15em;
+    }
+    .logo-badge::before {
+      content: '';
+      display: block;
+      width: 5px; height: 5px;
+      background: var(--green-live);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+    .nav-section { padding: 18px 20px 6px; }
+    .nav-section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 10px;
+    }
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 12px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: left;
+      transition: all 0.18s ease;
+      margin-bottom: 2px;
+      position: relative;
+    }
+    .filter-btn:hover {
+      background: var(--purple-glow2);
+      color: var(--text-white);
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(30,58,138,0.15));
+      color: var(--purple-pale);
+      border: 1px solid rgba(59,130,246,0.3);
+    }
+    .filter-btn.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      height: 60%;
+      width: 2px;
+      background: var(--purple-core);
+      border-radius: 0 2px 2px 0;
+    }
+    .filter-btn.active .filter-count {
+      background: rgba(59,130,246,0.3);
+      color: var(--purple-pale);
+    }
+    .league-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .filter-count {
+      margin-left: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      background: var(--black-border);
+      color: var(--text-faint);
+      border-radius: 10px;
+      padding: 1px 7px;
+      min-width: 24px;
+      text-align: center;
+    }
+    .type-icon {
+      width: 18px; height: 18px;
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .social-section {
+      margin-top: auto;
+      padding: 16px 20px 24px;
+      border-top: 1px solid var(--black-border);
+    }
+    .social-section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 10px;
+    }
+    .social-links { display: flex; gap: 8px; }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--black-border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.18s ease;
+      flex: 1;
+      justify-content: center;
+    }
+    .social-btn:hover {
+      border-color: var(--purple-dim);
+      color: var(--text-white);
+      background: var(--purple-glow2);
+    }
+    .social-btn svg { flex-shrink: 0; }
+    .mobile-burger {
+      display: none;
+      position: fixed;
+      top: 16px; left: 16px;
+      z-index: 200;
+      background: var(--black-card);
+      border: 1px solid var(--black-border);
+      border-radius: 8px;
+      padding: 8px;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mobile-burger span {
+      display: block;
+      width: 20px; height: 2px;
+      background: var(--text-muted);
+      border-radius: 1px;
+      transition: all 0.25s ease;
+    }
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 90;
+      backdrop-filter: blur(3px);
+    }
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      padding: 24px 32px 20px;
+      border-bottom: 1px solid var(--black-border);
+      background: linear-gradient(180deg, rgba(17,25,54,0.9) 0%, transparent 100%);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+    .topbar-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .topbar-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.05em;
+      color: var(--text-white);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .topbar-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+    }
+    .stats-bar {
+      display: flex;
+      gap: 2px;
+      background: var(--black-card);
+      border: 1px solid var(--black-border);
+      border-radius: 10px;
+      overflow: hidden;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      border-right: 1px solid var(--black-border);
+      min-width: 110px;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--text-white);
+    }
+    .stat-val.purple { color: var(--purple-bright); }
+    .stat-val.green  { color: var(--green-live); }
+    .stat-val.amber  { color: var(--amber-warn); }
+    .stat-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .toolbar {
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--black-border);
+      flex-wrap: wrap;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-faint);
+    }
+    .search-input {
+      width: 100%;
+      background: var(--black-card);
+      border: 1px solid var(--black-border);
+      border-radius: 8px;
+      padding: 9px 12px 9px 36px;
+      color: var(--text-white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.18s ease;
+    }
+    .search-input::placeholder { color: var(--text-faint); }
+    .search-input:focus { border-color: var(--purple-core); }
+    .sort-select {
+      background: var(--black-card);
+      border: 1px solid var(--black-border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: var(--text-muted);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      padding-right: 28px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+    .sort-select:focus { border-color: var(--purple-core); }
+    .result-count {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+    .news-grid {
+      padding: 24px 32px 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+    .news-card:first-child {
+      grid-column: span 2;
+      border-top: 2px solid var(--purple-core);
+    }
+    .news-card {
+      background: var(--black-card);
+      border: 1px solid var(--black-border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      animation: card-in 0.4s ease both;
+    }
+    .news-card.expanded {
+      grid-column: 1 / -1;
+      border-color: var(--purple-core);
+      box-shadow: 0 0 30px rgba(59,130,246,0.3);
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .news-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.06), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .news-card::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 13px;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--purple-core), transparent 70%) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .news-card:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 0 0 1px rgba(59,130,246,0.35),
+        0 8px 40px rgba(59,130,246,0.18),
+        0 2px 8px rgba(0,0,0,0.4);
+      border-color: transparent;
+      background: var(--black-hover);
+    }
+    .news-card:hover::before { opacity: 1; }
+    .news-card:hover::after  { opacity: 1; }
+    .news-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .journalist-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .journalist-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .journalist-avatar::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      border: 2px solid var(--ring-color, var(--purple-core));
+    }
+    .journalist-info { display: flex; flex-direction: column; gap: 1px; }
+    .journalist-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-white);
+      line-height: 1;
+    }
+    .journalist-handle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: var(--text-faint);
+      letter-spacing: 0.05em;
+    }
+    .card-meta-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+    }
+    .time-stamp {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+    }
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .type-badge.official {
+      background: var(--green-dim);
+      color: var(--green-live);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+    .type-badge.rumor {
+      background: rgba(30,58,138,0.25);
+      color: var(--purple-pale);
+      border: 1px solid rgba(59,130,246,0.25);
+    }
+    .type-badge.negotiation {
+      background: var(--amber-dim);
+      color: var(--amber-warn);
+      border: 1px solid rgba(245,158,11,0.2);
+    }
+    .type-badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text-white);
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .news-card:first-child .card-title {
+      font-size: 19px;
+      -webkit-line-clamp: 3;
+    }
+    .news-card.expanded .card-title {
+      -webkit-line-clamp: unset;
+      font-size: 22px;
+    }
+    .card-excerpt {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .news-card.expanded .card-excerpt {
+      -webkit-line-clamp: unset;
+      font-size: 15px;
+    }
+    .card-full-content {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--black-border);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+    .news-card.expanded .card-full-content {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-full-content p {
+      margin-bottom: 12px;
+    }
+    .card-full-content a {
+      color: var(--purple-pale);
+      text-decoration: underline;
+    }
+    .reliability-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .reliability-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+    .reliability-track {
+      flex: 1;
+      height: 3px;
+      background: var(--black-border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .reliability-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .reliability-pct {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      width: 30px;
+      text-align: right;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .tag {
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      border: 1px solid var(--black-border);
+      color: var(--text-faint);
+      background: transparent;
+      transition: all 0.15s ease;
+    }
+    .tag.league {
+      color: var(--purple-bright);
+      border-color: rgba(59,130,246,0.3);
+      background: rgba(30,58,138,0.15);
+    }
+    .tag.source {
+      color: #94a3b8;
+      border-color: rgba(100,116,139,0.3);
+      background: rgba(100,116,139,0.06);
+    }
+    .tag.link-tag {
+      color: var(--purple-pale);
+      border-color: rgba(59,130,246,0.4);
+      background: rgba(59,130,246,0.15);
+      cursor: pointer;
+      text-decoration: none;
+      pointer-events: auto !important;
+      z-index: 10;
+    }
+    .tag.link-tag:hover {
+      background: rgba(59,130,246,0.3);
+      color: #fff;
+    }
+    .news-card:hover .tag.league {
+      border-color: rgba(96,165,250,0.45);
+      background: rgba(59,130,246,0.18);
+      color: var(--purple-pale);
+    }
+    .featured-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--purple-core);
+      margin-bottom: 12px;
+    }
+    .expand-icon {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--purple-core);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.2s ease;
+      z-index: 10;
+      cursor: pointer;
+    }
+    .news-card:hover .expand-icon {
+      opacity: 1;
+    }
+    .news-card.expanded .expand-icon {
+      opacity: 1;
+      background: var(--purple-bright);
+    }
+    .expand-icon svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s ease;
+      fill: white;
+    }
+    .news-card.expanded .expand-icon svg {
+      transform: rotate(180deg);
+    }
+    .empty-state {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 20px;
+      gap: 16px;
+    }
+    .empty-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: rgba(30,58,138,0.18);
+      border: 1px solid rgba(59,130,246,0.25);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .empty-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .empty-sub {
+      font-size: 13px;
+      color: var(--text-faint);
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.6;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--black-border); border-radius: 2px; }
+
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); box-shadow: 8px 0 40px rgba(0,0,0,0.6); }
+      .mobile-overlay.open { display: block; }
+      .mobile-burger { display: flex; }
+      .main { margin-left: 0; }
+      .topbar { padding: 16px 16px 16px 60px; }
+      .toolbar { padding: 12px 16px; }
+      .news-grid { padding: 16px 16px 24px; gap: 12px; }
+      .news-card:first-child { grid-column: span 1; }
+      .topbar-row { flex-direction: column; }
+      .stats-bar { flex-wrap: wrap; }
+      .stat-item { min-width: 90px; }
+    }
+    @media (max-width: 600px) {
+      .news-grid { grid-template-columns: 1fr; }
+      .topbar-heading { font-size: 22px; }
+      .stat-val { font-size: 20px; }
+      .card-title { font-size: 14px; }
+      .news-card.expanded .card-title { font-size: 18px; }
+      .filter-btn { font-size: 12px; padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+<button class="mobile-burger" id="burger" onclick="openSidebar()" aria-label="Open menu">
+  <span></span><span></span><span></span>
+</button>
+<aside class="sidebar" id="sidebar">
+  <div class="logo-block">
+    <svg class="logo-svg" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#e0e7ff;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="30" r="18" fill="none" stroke="url(#logoGrad)" stroke-width="2"/>
+      <path d="M20 12 L20 48 M12 20 L28 20 M12 40 L28 40 M8 30 L32 30" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6"/>
+      <text x="45" y="28" font-family="Bebas Neue, sans-serif" font-size="22" fill="url(#logoGrad)" letter-spacing="1">MERCATO</text>
+      <text x="45" y="50" font-family="Bebas Neue, sans-serif" font-size="22" fill="url(#logoGrad)" letter-spacing="1">MAESTRO</text>
+    </svg>
+    <div class="logo-label">Transfer Intelligence</div>
+    <div class="logo-badge">LIVE FEED</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Championships</div>
+    <button class="filter-btn active" data-filter="league" data-value="all">
+      <span class="league-dot" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)"></span>
+      All Leagues
+      <span class="filter-count" id="count-all">0</span>
+    </button>
+    <button class="filter-btn" data-filter="league" data-value="premier-league">
+      <span class="league-dot" style="background:#37003c"></span>
+      Premier League
+      <span class="filter-count" id="count-premier-league">0</span>
+    </button>
+    <button class="filter-btn" data-filter="league" data-value="serie-a">
+      <span class="league-dot" style="background:#001489"></span>
+      Serie A
+      <span class="filter-count" id="count-serie-a">0</span>
+    </button>
+    <button class="filter-btn" data-filter="league" data-value="la-liga">
+      <span class="league-dot" style="background:#ee1111"></span>
+      La Liga
+      <span class="filter-count" id="count-la-liga">0</span>
+    </button>
+    <button class="filter-btn" data-filter="league" data-value="bundesliga">
+      <span class="league-dot" style="background:#d4021d"></span>
+      Bundesliga
+      <span class="filter-count" id="count-bundesliga">0</span>
+    </button>
+    <button class="filter-btn" data-filter="league" data-value="ligue-1">
+      <span class="league-dot" style="background:#0055a4"></span>
+      Ligue 1
+      <span class="filter-count" id="count-ligue-1">0</span>
+    </button>
+  </div>
+  <div class="nav-section" style="margin-top:8px">
+    <div class="nav-section-title">News Type</div>
+    <button class="filter-btn active" data-filter="type" data-value="all">
+      <span class="type-icon" style="background:rgba(59,130,246,0.15)">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="1" y="1" width="8" height="8" rx="1.5" stroke="#3b82f6" stroke-width="1.2"/></svg>
+      </span>
+      All Types
+    </button>
+    <button class="filter-btn" data-filter="type" data-value="official">
+      <span class="type-icon" style="background:rgba(16,185,129,0.12)">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2.5 2.5 3.5-4" stroke="#10b981" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      Official
+    </button>
+    <button class="filter-btn" data-filter="type" data-value="rumor">
+      <span class="type-icon" style="background:rgba(96,165,250,0.12)">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v3.5M5 7.5v.5" stroke="#60a5fa" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </span>
+      Rumors
+    </button>
+    <button class="filter-btn" data-filter="type" data-value="negotiation">
+      <span class="type-icon" style="background:rgba(245,158,11,0.1)">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M7 3l2 2-2 2" stroke="#f59e0b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      Negotiations
+    </button>
+  </div>
+  <div class="social-section">
+    <div class="social-section-title">Follow Us</div>
+    <div class="social-links">
+      <a href="#" class="social-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.296c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.925z"/></svg>
+        Telegram
+      </a>
+      <a href="#" class="social-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X / Twitter
+      </a>
+    </div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-row">
+      <div>
+        <div class="topbar-heading">Transfer Wire</div>
+        <div class="topbar-sub" id="topbar-date">LOADING DATE...</div>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-val purple" id="stat-total">0</span>
+          <span class="stat-lbl">News Today</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val green" id="stat-official">0</span>
+          <span class="stat-lbl">Official Deals</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val amber" id="stat-nego">0</span>
+          <span class="stat-lbl">Negotiations</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" id="stat-rumor">0</span>
+          <span class="stat-lbl">Rumors</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" type="text" id="search" placeholder="Search players, clubs, journalists..." />
+    </div>
+    <select class="sort-select" id="sort">
+      <option value="newest">Latest first</option>
+      <option value="oldest">Oldest first</option>
+      <option value="reliability">By reliability</option>
+    </select>
+    <span class="result-count" id="result-count">0 articles</span>
+  </div>
+  <div class="news-grid" id="news-grid">
+  </div>
+</main>
+<script>
+let allNewsData = [];
+let activeLeague = 'all';
+let activeType = 'all';
+let searchQuery = '';
+let sortMode = 'newest';
+let expandedCardId = null;
+const sourceStyles = {
+  'Tuttomercatoweb': { color: '#1e3a5f', ring: '#60a5fa', initials: 'TM' },
+  'Calciomercato.com': { color: '#065f46', ring: '#10b981', initials: 'CM' },
+  'Football Italia': { color: '#9a3412', ring: '#f97316', initials: 'FI' },
+  'Goal Italia': { color: '#1e1b4b', ring: '#818cf8', initials: 'GI' },
+  'Gazzetta': { color: '#991b1b', ring: '#f87171', initials: 'GdS' },
+  'Corriere Sport': { color: '#1e40af', ring: '#3b82f6', initials: 'CS' },
+  'La Repubblica Sport': { color: '#1e3a8a', ring: '#60a5fa', initials: 'RS' }
+};
+function getSourceStyle(source) {
+  return sourceStyles[source] || {
+    color: '#1e3a8a',
+    ring: '#60a5fa',
+    initials: source.substring(0, 2).toUpperCase()
+  };
+}
+function normalizeLeague(league) {
+  if (!league) return 'other';
+  const map = {
+    'Premier League': 'premier-league',
+    'Serie A': 'serie-a',
+    'La Liga': 'la-liga',
+    'Bundesliga': 'bundesliga',
+    'Ligue 1': 'ligue-1'
+  };
+  return map[league] || 'other';
+}
+function normalizeType(type) {
+  if (!type) return 'rumor';
+  const t = type.toLowerCase();
+  if (t.includes('official')) return 'official';
+  if (t.includes('negotiation')) return 'negotiation';
+  return 'rumor';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const now = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('topbar-date').textContent =
+    now.toLocaleDateString('it-IT', opts).toUpperCase() + ' · ' +
+    now.toLocaleTimeString('it-IT', { hour:'2-digit', minute:'2-digit' }) + ' UTC';
+  loadNews();
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      const val = btn.dataset.value;
+      document.querySelectorAll(`.filter-btn[data-filter="${filter}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (filter === 'league') activeLeague = val;
+      if (filter === 'type') activeType = val;
+      renderCards();
+    });
+  });
+  document.getElementById('search').addEventListener('input', e => {
+    searchQuery = e.target.value.toLowerCase();
+    renderCards();
+  });
+  document.getElementById('sort').addEventListener('change', e => {
+    sortMode = e.target.value;
+    renderCards();
+  });
+});
+async function loadNews() {
+  try {
+    const response = await fetch('news.json?_=' + Date.now());
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    allNewsData = await response.json();
+    if (!Array.isArray(allNewsData)) {
+      console.error('news.json non contiene un array');
+      allNewsData = [];
+    }
+    console.log(`✅ Caricate ${allNewsData.length} news`);
+    updateCounts();
+    renderCards();
+  } catch (error) {
+    console.error('❌ Errore caricamento news:', error);
+    allNewsData = [];
+    updateCounts();
+    renderCards();
+  }
+}
+function updateCounts() {
+  const leagues = ['premier-league', 'serie-a', 'la-liga', 'bundesliga', 'ligue-1'];
+  leagues.forEach(l => {
+    const count = allNewsData.filter(n => normalizeLeague(n.league) === l).length;
+    const el = document.getElementById(`count-${l}`);
+    if (el) el.textContent = count;
+  });
+  document.getElementById('count-all').textContent = allNewsData.length;
+  document.getElementById('stat-total').textContent = allNewsData.length;
+  document.getElementById('stat-official').textContent = allNewsData.filter(n => normalizeType(n.type) === 'official').length;
+  document.getElementById('stat-nego').textContent = allNewsData.filter(n => normalizeType(n.type) === 'negotiation').length;
+  document.getElementById('stat-rumor').textContent = allNewsData.filter(n => normalizeType(n.type) === 'rumor').length;
+}
+function getFiltered() {
+  let list = [...allNewsData];
+  if (activeLeague !== 'all') {
+    list = list.filter(n => normalizeLeague(n.league) === activeLeague);
+  }
+  if (activeType !== 'all') {
+    list = list.filter(n => normalizeType(n.type) === activeType);
+  }
+  if (searchQuery) {
+    list = list.filter(n =>
+      n.title.toLowerCase().includes(searchQuery) ||
+      n.source.toLowerCase().includes(searchQuery) ||
+      (n.league && n.league.toLowerCase().includes(searchQuery))
+    );
+  }
+  if (sortMode === 'oldest') {
+    list.reverse();
+  } else if (sortMode === 'reliability') {
+    list.sort((a, b) => b.reliability - a.reliability);
+  }
+  return list;
+}
+function reliabilityColor(pct) {
+  if (pct >= 90) return '#10b981';
+  if (pct >= 70) return '#60a5fa';
+  if (pct >= 50) return '#f59e0b';
+  return '#ef4444';
+}
+function typeHTML(type) {
+  const normalized = normalizeType(type);
+  const map = {
+    official: { label: 'Official', cls: 'official' },
+    rumor: { label: 'Rumor', cls: 'rumor' },
+    negotiation: { label: 'Negotiation', cls: 'negotiation' }
+  };
+  const t = map[normalized] || map.rumor;
+  return `<span class="type-badge ${t.cls}"><span class="type-badge-dot"></span>${t.label}</span>`;
+}
+function expandCard(cardId, event) {
+  if (event) event.stopPropagation();
+  const cards = document.querySelectorAll('.news-card');
+  const clickedCard = document.querySelector(`.news-card[data-id="${cardId}"]`);
+  if (!clickedCard) return;
+  cards.forEach(card => {
+    if (card.dataset.id !== cardId) {
+      card.classList.remove('expanded');
+    }
+  });
+  if (clickedCard.classList.contains('expanded')) {
+    clickedCard.classList.remove('expanded');
+    expandedCardId = null;
+  } else {
+    clickedCard.classList.add('expanded');
+    expandedCardId = cardId;
+    setTimeout(() => {
+      clickedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
+}
+function renderCards() {
+  const list = getFiltered();
+  const grid = document.getElementById('news-grid');
+  const count = document.getElementById('result-count');
+  count.textContent = `${list.length} article${list.length !== 1 ? 's' : ''}`;
+  if (list.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6M11 8v6" opacity=".5"/></svg>
+        </div>
+        <div class="empty-title">No Transfers Found</div>
+        <div class="empty-sub">Try adjusting your filters or search terms to see more transfer news.</div>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = list.map((item, i) => {
+    const style = getSourceStyle(item.source);
+    const delay = Math.min(i * 50, 400);
+    const rColor = reliabilityColor(item.reliability);
+    const type = normalizeType(item.type);
+    const league = item.league || '';
+    const fullContent = item.fullContent || item.excerpt || item.summary || 'Contenuto completo disponibile alla fonte originale.';
+    return `
+      <div class="news-card ${expandedCardId === String(item.id) ? 'expanded' : ''}" data-id="${item.id}" style="animation-delay:${delay}ms">
+        <div class="expand-icon" onclick="expandCard('${item.id}', event)">
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        ${i === 0 && activeLeague === 'all' && activeType === 'all' ? '<div class="featured-label"><svg width="8" height="8" viewBox="0 0 8 8" fill="#3b82f6"><polygon points="4,0 5.1,2.9 8,3.1 5.8,5 6.5,8 4,6.4 1.5,8 2.2,5 0,3.1 2.9,2.9"/></svg>&nbsp;FEATURED</div>' : ''}
+        <div class="card-top">
+          <div class="journalist-row">
+            <div class="journalist-avatar" style="background:${style.color}20;--ring-color:${style.ring}">
+              <span style="color:${style.ring};font-size:11px;font-weight:700;font-family:'Outfit',sans-serif">${style.initials}</span>
+            </div>
+            <div class="journalist-info">
+              <span class="journalist-name">${item.source}</span>
+              <span class="journalist-handle">${item.date}</span>
+            </div>
+          </div>
+          <div class="card-meta-right">
+            ${typeHTML(item.type)}
+          </div>
+        </div>
+        <div class="card-title">${item.title}</div>
+        <div class="card-excerpt">${item.excerpt || item.summary || ''}</div>
+        <div class="card-full-content">
+          <div style="background: var(--black-card); padding: 16px; border-radius: 8px; border-left: 3px solid var(--purple-core);">
+            <p style="margin-bottom: 12px; font-size: 15px; line-height: 1.8;">${fullContent}</p>
+            ${item.link ? `<p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--black-border);"><a href="${item.link}" target="_blank" rel="noopener noreferrer" style="color: var(--purple-pale); text-decoration: none; font-weight: 600;" onclick="event.stopPropagation()">📰 Leggi articolo completo alla fonte →</a></p>` : ''}
+          </div>
+        </div>
+        <div class="reliability-row">
+          <span class="reliability-label">RELIABILITY</span>
+          <div class="reliability-track">
+            <div class="reliability-fill" style="width:${item.reliability}%;background:${rColor}"></div>
+          </div>
+          <span class="reliability-pct" style="color:${rColor}">${item.reliability}%</span>
+        </div>
+        <div class="card-tags">
+          ${league ? `<span class="tag league">${league}</span>` : ''}
+          <span class="tag source">${item.source}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+setInterval(loadNews, 300000);
+</script>
+</body>
+</html>
