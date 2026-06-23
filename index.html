@@ -60,7 +60,7 @@
 </script>
 
 <!-- FAVICON inline SVG (niente file esterno) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f0b961'/%3E%3Cstop offset='100%25' stop-color='%23a37a45'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='8' fill='%230d1117'/%3E%3Cpath d='M8 12 L20 6 L32 12 L32 26 L20 32 L8 26 Z' fill='none' stroke='url(%23g)' stroke-width='2' stroke-linejoin='round'/%3E%3Ctext x='20' y='25' font-family='Bebas Neue, sans-serif' font-size='14' font-weight='700' fill='url(%23g)' text-anchor='middle'%3EMM%3C/text%3E%3C/svg%3E" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 200'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='100%25' stop-color='%238a8a8a'/%3E%3C/linearGradient%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fbe8c5'/%3E%3Cstop offset='100%25' stop-color='%23a37a45'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='220' height='200' fill='%230d1117' rx='28'/%3E%3Cpath d='M28 180 L28 35 L62 35 L62 180 Z' fill='url(%23s)'/%3E%3Cpath d='M28 35 L115 175 L100 195 L62 130 L62 35 Z' fill='url(%23s)'/%3E%3Cpath d='M158 35 L192 35 L192 180 L158 180 Z' fill='url(%23g)'/%3E%3Cpath d='M158 35 L158 130 L120 195 L105 175 L192 35 Z' fill='url(%23g)'/%3E%3Cpath d='M178 45 L218 8 L222 14 L182 52 Z' fill='url(%23g)'/%3E%3Ccircle cx='110' cy='34' r='20' fill='%230d1117' stroke='url(%23g)' stroke-width='2.4'/%3E%3Cpath d='M110 18 L122 27 L117 41 L103 41 L98 27 Z' fill='url(%23g)'/%3E%3C/svg%3E" />
 
 <!-- PRECONNECT FONT + API -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -136,9 +136,9 @@ body::before {
   gap: 12px;
 }
 .logo-mark {
-  width: 44px; height: 44px;
+  width: 56px; height: 52px;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px rgba(212,165,116,0.25));
+  filter: drop-shadow(0 2px 10px rgba(212,165,116,0.3));
 }
 .logo-text-block { min-width: 0; }
 .logo {
@@ -1159,27 +1159,31 @@ h1 {
 <aside class="sidebar" id="sidebar">
   <div>
     <div class="logo-block">
-      <svg class="logo-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <svg class="logo-mark" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <linearGradient id="lg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f0b961"/>
+          <linearGradient id="lg-silver" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="55%" stop-color="#dcdcdc"/>
+            <stop offset="100%" stop-color="#8a8a8a"/>
+          </linearGradient>
+          <linearGradient id="lg-gold-mm" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fbe8c5"/>
+            <stop offset="45%" stop-color="#f0b961"/>
             <stop offset="100%" stop-color="#a37a45"/>
           </linearGradient>
-          <linearGradient id="lg-grad-light" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#fbe8c5"/>
-            <stop offset="100%" stop-color="#d4a574"/>
-          </linearGradient>
         </defs>
-        <!-- esagono scudo -->
-        <path d="M24 4 L42 13 L42 35 L24 44 L6 35 L6 13 Z"
-              fill="#0d1117" stroke="url(#lg-grad)" stroke-width="2" stroke-linejoin="round"/>
-        <!-- pallone stilizzato (cerchio + pentagoni) -->
-        <circle cx="24" cy="20" r="6" fill="none" stroke="url(#lg-grad-light)" stroke-width="1.4"/>
-        <path d="M24 14 L26.5 18 L24 21 L21.5 18 Z" fill="url(#lg-grad-light)" opacity="0.85"/>
-        <path d="M18 19 L20 21.5 M28.5 19.5 L30 21.5" stroke="url(#lg-grad-light)" stroke-width="1.1" stroke-linecap="round"/>
-        <!-- Monogramma MM -->
-        <text x="24" y="38" font-family="Bebas Neue, sans-serif" font-size="11" font-weight="700"
-              fill="url(#lg-grad)" text-anchor="middle" letter-spacing="0.08em">MM</text>
+        <!-- M LEFT HALF · silver -->
+        <path d="M28 180 L28 35 L62 35 L62 180 Z" fill="url(#lg-silver)"/>
+        <path d="M28 35 L115 175 L100 195 L62 130 L62 35 Z" fill="url(#lg-silver)"/>
+        <!-- M RIGHT HALF · gold -->
+        <path d="M158 35 L192 35 L192 180 L158 180 Z" fill="url(#lg-gold-mm)"/>
+        <path d="M158 35 L158 130 L120 195 L105 175 L192 35 Z" fill="url(#lg-gold-mm)"/>
+        <!-- swoosh diagonale verso l'alto (destra) -->
+        <path d="M178 45 L218 8 L222 14 L182 52 Z" fill="url(#lg-gold-mm)"/>
+        <!-- pallone in alto al centro -->
+        <circle cx="110" cy="34" r="20" fill="#0d1117" stroke="url(#lg-gold-mm)" stroke-width="2.4"/>
+        <path d="M110 18 L122 27 L117 41 L103 41 L98 27 Z" fill="url(#lg-gold-mm)"/>
+        <path d="M93 46 L98 27 M127 46 L122 27 M110 18 L110 10 M103 41 L98 50 M117 41 L122 50" stroke="url(#lg-gold-mm)" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
       <div class="logo-text-block">
         <h1 class="logo" style="margin:0">
@@ -1230,11 +1234,11 @@ h1 {
   <div class="social-section">
     <div class="section-title">Seguici</div>
     <div class="social-links">
-      <a href="#" class="social-btn">
+      <a href="https://t.me/mercatomaestro" target="_blank" rel="noopener" class="social-btn">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.296c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.925z"/></svg>
         Telegram
       </a>
-      <a href="#" class="social-btn">
+      <a href="#" class="social-btn" title="Aggiungi handle X reale">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         X
       </a>
@@ -1290,6 +1294,8 @@ h1 {
   <footer class="site-footer">
     <div class="footer-left">© 2026 MERCATO MAESTRO · TRANSFER INTELLIGENCE</div>
     <nav class="footer-links" aria-label="Link legali">
+      <a href="about.html">Chi Siamo</a>
+      <a href="contact.html">Contatti</a>
       <a href="privacy.html">Privacy Policy</a>
       <a href="cookies.html">Cookie Policy</a>
       <a href="#" onclick="resetCookieConsent(); return false;">Modifica preferenze cookie</a>
