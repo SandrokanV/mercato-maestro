@@ -585,6 +585,85 @@ h1 {
 }
 
 /* ============================================================
+   FILTRO TEMPORALE (chip)
+   ============================================================ */
+.time-chips {
+  display:flex; gap:6px; align-items:center;
+  flex-wrap:wrap;
+}
+.time-chip {
+  padding:6px 12px;
+  border-radius:18px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; font-weight:600;
+  letter-spacing:0.12em; text-transform:uppercase;
+  background: var(--surface);
+  color: var(--text-muted);
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition: all 0.16s ease;
+  white-space:nowrap;
+}
+.time-chip:hover { color: var(--text); border-color: var(--gold-deep); }
+.time-chip.active {
+  background: var(--gold);
+  color:#1a1006;
+  border-color: var(--gold);
+}
+
+/* ============================================================
+   FAVORITES (stella su ogni news + tab preferiti)
+   ============================================================ */
+.fav-btn {
+  position:absolute;
+  top:10px; right:10px;
+  width:30px; height:30px;
+  border-radius:50%;
+  background: var(--bg-elev);
+  border:1px solid var(--border);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition: all 0.18s ease;
+  z-index:5;
+  color: var(--text-faint);
+}
+.fav-btn:hover { color: var(--gold-bright); border-color: var(--gold-deep); transform: scale(1.08); }
+.fav-btn.is-fav { color: var(--gold-bright); border-color: var(--gold); background: var(--gold-glow); }
+.fav-btn svg { width:14px; height:14px; }
+.news-row { position: relative; }
+.news-row .fav-btn {
+  top: 50%; transform: translateY(-50%); right: 8px;
+  width: 26px; height: 26px;
+}
+.news-row .fav-btn:hover { transform: translateY(-50%) scale(1.08); }
+.card-mag { position: relative; }
+
+/* ============================================================
+   NOTIFICATIONS BELL (topbar)
+   ============================================================ */
+.bell-btn {
+  width:36px; height:36px;
+  border-radius:8px;
+  background: var(--surface);
+  border:1px solid var(--border);
+  cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+  color: var(--text-muted);
+  transition: all 0.18s ease;
+  position: relative;
+}
+.bell-btn:hover { color: var(--gold-bright); border-color: var(--gold-deep); }
+.bell-btn.active { color: var(--gold-bright); border-color: var(--gold); background: var(--gold-glow); }
+.bell-btn.active::after {
+  content:''; position:absolute;
+  top:6px; right:6px;
+  width:8px; height:8px; border-radius:50%;
+  background: var(--green);
+  border: 2px solid var(--surface);
+  animation: pulse-dot 1.8s infinite;
+}
+
+/* ============================================================
    COOKIE BANNER GDPR
    ============================================================ */
 .cookie-banner {
@@ -1170,11 +1249,17 @@ h1 {
       <h2 id="topbar-heading" style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:0.05em; color:var(--text); line-height:1; margin:0">Transfer Wire</h2>
       <div class="subtitle" id="topbar-date">CARICAMENTO…</div>
     </div>
-    <div class="stats" id="stats-bar"></div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="stats" id="stats-bar"></div>
+      <button class="bell-btn" id="bell-btn" onclick="toggleNotifications()" aria-label="Attiva notifiche browser" title="Notifiche browser">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+    </div>
   </div>
 
   <nav class="tabs" role="navigation" aria-label="Sezioni principali">
     <button class="tab active" data-tab="news">📰 News <span class="tab-count" id="tc-news">0</span></button>
+    <button class="tab" data-tab="favorites">⭐ Preferiti <span class="tab-count" id="tc-fav">0</span></button>
     <button class="tab" data-tab="leagues">🏆 Competizioni</button>
   </nav>
 
@@ -1182,6 +1267,12 @@ h1 {
     <div class="search-wrap">
       <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input class="search" id="search" placeholder="Cerca…" autocomplete="off"/>
+    </div>
+    <div class="time-chips" id="time-chips" role="radiogroup" aria-label="Filtro temporale">
+      <button class="time-chip active" data-time="all">Tutto</button>
+      <button class="time-chip" data-time="24h">24h</button>
+      <button class="time-chip" data-time="3d">3 giorni</button>
+      <button class="time-chip" data-time="7d">7 giorni</button>
     </div>
     <div class="view-toggle" id="view-toggle">
       <button class="active" data-view="list">▤ Lista</button>
@@ -1192,6 +1283,7 @@ h1 {
   </div>
 
   <div class="view" id="view-news"></div>
+  <div class="view hidden" id="view-favorites"></div>
   <div class="view hidden" id="view-leagues"></div>
 
   <!-- ============= FOOTER ============= -->
@@ -1260,6 +1352,140 @@ function initCookieBanner() {
   } else if (getCookieConsent().choice === 'reject') {
     (window.adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds = 1;
   }
+}
+
+/* ============================
+   FAVORITES (localStorage)
+   ============================ */
+const FAV_KEY = 'mm_favorites';
+let favorites = new Set();
+function loadFavorites() {
+  try { favorites = new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); }
+  catch (e) { favorites = new Set(); }
+  updateFavCount();
+}
+function saveFavorites() {
+  localStorage.setItem(FAV_KEY, JSON.stringify([...favorites]));
+  updateFavCount();
+}
+function toggleFavorite(id, ev) {
+  if (ev) ev.stopPropagation();
+  id = String(id);
+  if (favorites.has(id)) favorites.delete(id);
+  else favorites.add(id);
+  saveFavorites();
+  // aggiorna l'icona inline senza ridisegnare tutto
+  document.querySelectorAll(`[data-fav-id="${id}"]`).forEach(b => b.classList.toggle('is-fav', favorites.has(id)));
+  if (activeTab === 'favorites') renderActive();
+}
+function updateFavCount() {
+  const el = document.getElementById('tc-fav');
+  if (el) el.textContent = favorites.size;
+}
+function favBtnHtml(id) {
+  const isFav = favorites.has(String(id));
+  return `<button class="fav-btn ${isFav ? 'is-fav' : ''}" data-fav-id="${escapeHtml(String(id))}" onclick="toggleFavorite('${escapeHtml(String(id))}', event)" aria-label="${isFav ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'}" title="${isFav ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'}">
+    <svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+  </button>`;
+}
+
+/* ============================
+   FILTRO TEMPORALE
+   ============================ */
+let activeTime = 'all'; // 'all' | '24h' | '3d' | '7d'
+function parseRelativeDate(s) {
+  if (!s) return null;
+  // ISO date
+  const t = Date.parse(s);
+  if (!isNaN(t)) return new Date(t);
+  // formati italiani: "2h fa", "3 giorni fa", "30 min fa", "1 settimana fa"
+  s = String(s).toLowerCase().trim();
+  const m = s.match(/(\d+)\s*(min|m|h|ora|ore|g|giorni|giorno|d|day|days|s|sett|settimana|settimane|week|weeks)/);
+  if (!m) return null;
+  const n = parseInt(m[1], 10);
+  const u = m[2];
+  let ms = 0;
+  if (u === 'min' || u === 'm') ms = n * 60000;
+  else if (u === 'h' || u.startsWith('or')) ms = n * 3600000;
+  else if (u === 'g' || u.startsWith('gior') || u === 'd' || u.startsWith('day')) ms = n * 86400000;
+  else if (u === 's' || u.startsWith('sett') || u.startsWith('week')) ms = n * 7 * 86400000;
+  return new Date(Date.now() - ms);
+}
+function withinTimeFilter(item) {
+  if (activeTime === 'all') return true;
+  const d = parseRelativeDate(item.date);
+  if (!d) return true; // se non riusciamo a parsare, includiamo (no rischio di nascondere)
+  const ageMs = Date.now() - d.getTime();
+  if (activeTime === '24h') return ageMs <= 24 * 3600000;
+  if (activeTime === '3d')  return ageMs <= 3 * 86400000;
+  if (activeTime === '7d')  return ageMs <= 7 * 86400000;
+  return true;
+}
+
+/* ============================
+   NOTIFICATIONS BROWSER
+   ============================ */
+const NOTIF_KEY = 'mm_notifications';
+const SEEN_KEY  = 'mm_seen_ids';
+function notifEnabled() { return localStorage.getItem(NOTIF_KEY) === 'on'; }
+function getSeenIds() {
+  try { return new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || '[]')); }
+  catch (e) { return new Set(); }
+}
+function saveSeenIds(set) {
+  // Mantieni solo gli ultimi 500 id per non far esplodere il localStorage
+  const arr = [...set].slice(-500);
+  localStorage.setItem(SEEN_KEY, JSON.stringify(arr));
+}
+async function toggleNotifications() {
+  if (!('Notification' in window)) {
+    alert('Il tuo browser non supporta le notifiche.');
+    return;
+  }
+  if (notifEnabled()) {
+    localStorage.removeItem(NOTIF_KEY);
+    document.getElementById('bell-btn').classList.remove('active');
+    return;
+  }
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    localStorage.setItem(NOTIF_KEY, 'on');
+    document.getElementById('bell-btn').classList.add('active');
+    new Notification('Mercato Maestro', { body: 'Notifiche attivate ✓ Riceverai le news Ufficiali e le grandi trattative.', icon: '/favicon.svg' });
+  } else {
+    alert('Le notifiche sono state bloccate dal browser. Modifica i permessi dalle impostazioni del sito.');
+  }
+}
+function initNotifications() {
+  if (notifEnabled() && Notification.permission === 'granted') {
+    document.getElementById('bell-btn').classList.add('active');
+  }
+}
+function checkNewNews(newList) {
+  if (!notifEnabled() || Notification.permission !== 'granted') return;
+  const seen = getSeenIds();
+  const initialEmpty = seen.size === 0;
+  const fresh = [];
+  newList.forEach(n => {
+    const id = String(n.id);
+    if (!seen.has(id)) {
+      // notifica solo Official + Negotiation (no rumor) per non spammare
+      const t = normalizeType(n.type);
+      if ((t === 'official' || t === 'negotiation') && !initialEmpty) fresh.push(n);
+      seen.add(id);
+    }
+  });
+  saveSeenIds(seen);
+  // Notifica solo le prime 3 fresh per non spammare
+  fresh.slice(0, 3).forEach(n => {
+    try {
+      new Notification(`${n.type === 'official' ? '✅ UFFICIALE' : '🔥 TRATTATIVA'} · ${n.league || 'Mercato'}`, {
+        body: n.title,
+        icon: '/favicon.svg',
+        tag: 'mm-' + n.id
+      });
+    } catch (e) {}
+  });
 }
 
 /* ============================
@@ -1538,6 +1764,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Time chips
+  document.querySelectorAll('.time-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      activeTime = chip.dataset.time;
+      document.querySelectorAll('.time-chip').forEach(c => c.classList.toggle('active', c === chip));
+      renderActive();
+    });
+  });
+
   // Modal close on Escape
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
@@ -1557,6 +1792,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setTab('news');
   loadNews();
   initCookieBanner();
+  loadFavorites();
+  initNotifications();
 });
 
 /* ============================
@@ -1566,15 +1803,17 @@ function setTab(tab) {
   activeTab = tab;
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
 
-  document.getElementById('filters-news').classList.toggle('hidden',    tab !== 'news');
+  document.getElementById('filters-news').classList.toggle('hidden',    tab !== 'news' && tab !== 'favorites');
   document.getElementById('filters-leagues').classList.toggle('hidden', tab !== 'leagues');
 
-  document.getElementById('view-news').classList.toggle('hidden',    tab !== 'news');
-  document.getElementById('view-leagues').classList.toggle('hidden', tab !== 'leagues');
+  document.getElementById('view-news').classList.toggle('hidden',      tab !== 'news');
+  document.getElementById('view-favorites').classList.toggle('hidden', tab !== 'favorites');
+  document.getElementById('view-leagues').classList.toggle('hidden',   tab !== 'leagues');
 
   const cfg = {
-    news:    { h:'Transfer Wire',  ph:"Cerca nelle news: 'Tonali', 'Real Madrid'…" },
-    leagues: { h:'Competizioni',   ph:"Cerca una competizione…" }
+    news:      { h:'Transfer Wire',  ph:"Cerca nelle news: 'Tonali', 'Real Madrid'…" },
+    favorites: { h:'I Tuoi Preferiti', ph:"Cerca tra i preferiti…" },
+    leagues:   { h:'Competizioni',   ph:"Cerca una competizione…" }
   }[tab];
   document.getElementById('topbar-heading').textContent = cfg.h;
   document.getElementById('search').placeholder = cfg.ph;
@@ -1584,14 +1823,17 @@ function setTab(tab) {
   // sort options
   const sort = document.getElementById('sort');
   const opts = {
-    news:    [['newest','Più recenti'],['oldest','Meno recenti'],['reliability','Per affidabilità']],
-    leagues: [['name','Nome A–Z'],['clubs','N° club']]
+    news:      [['newest','Più recenti'],['oldest','Meno recenti'],['reliability','Per affidabilità']],
+    favorites: [['newest','Più recenti'],['oldest','Meno recenti'],['reliability','Per affidabilità']],
+    leagues:   [['name','Nome A–Z'],['clubs','N° club']]
   }[tab];
   sort.innerHTML = opts.map(([v,l]) => `<option value="${v}">${l}</option>`).join('');
   sortMode = opts[0][0];
 
   // view toggle nascosto su leagues
   document.getElementById('view-toggle').style.display = (tab === 'leagues') ? 'none' : '';
+  // time chips visibili solo su news/favorites
+  document.getElementById('time-chips').style.display = (tab === 'leagues') ? 'none' : '';
 
   renderStats();
   renderActive();
@@ -1630,12 +1872,13 @@ async function loadNews() {
     allNewsData = await r.json();
     if (!Array.isArray(allNewsData)) allNewsData = [];
     console.log(`✅ Caricate ${allNewsData.length} news`);
+    checkNewNews(allNewsData);
   } catch (e) {
     console.error('❌ Errore news.json:', e);
     allNewsData = [];
   }
   updateCounts();
-  if (activeTab === 'news') { renderStats(); renderActive(); }
+  if (activeTab === 'news' || activeTab === 'favorites') { renderStats(); renderActive(); }
 }
 function updateCounts() {
   const lgs = ['premier-league','serie-a','la-liga','bundesliga','ligue-1'];
@@ -1652,6 +1895,7 @@ function getFilteredNews() {
   let list = [...allNewsData];
   if (activeLeague !== 'all') list = list.filter(n => normalizeLeague(n.league) === activeLeague);
   if (activeType   !== 'all') list = list.filter(n => normalizeType(n.type) === activeType);
+  list = list.filter(withinTimeFilter);
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     list = list.filter(n =>
@@ -1666,8 +1910,26 @@ function getFilteredNews() {
 }
 
 function renderActive() {
-  if (activeTab === 'news')    renderNews();
-  if (activeTab === 'leagues') renderLeagues();
+  if (activeTab === 'news')      renderNews();
+  if (activeTab === 'favorites') renderFavorites();
+  if (activeTab === 'leagues')   renderLeagues();
+}
+
+function renderFavorites() {
+  const wrap = document.getElementById('view-favorites');
+  // riusa stesso filtro/sort delle news, ma solo IDs in favorites
+  const list = getFilteredNews().filter(n => favorites.has(String(n.id)));
+  document.getElementById('result-count').textContent = `${list.length} preferit${list.length !== 1 ? 'i' : 'o'}`;
+  if (list.length === 0) {
+    wrap.innerHTML = emptyState('Nessun preferito',
+      favorites.size === 0
+        ? 'Salva le news che vuoi rileggere cliccando la stella ⭐ in alto a destra di ogni notizia.'
+        : 'Nessun preferito corrisponde ai filtri attuali. Modifica filtri/ricerca/periodo per vedere altri.');
+    return;
+  }
+  const renderer = viewMode === 'list' ? renderNewsRow : renderNewsCard;
+  if (viewMode === 'list') wrap.innerHTML = `<div class="list">${list.map(renderer).join('')}</div>`;
+  else                     wrap.innerHTML = `<div class="grid">${list.map(renderer).join('')}</div>`;
 }
 
 function renderNews() {
@@ -1744,6 +2006,7 @@ function renderNewsRow(item, i) {
         <span class="nm">${escapeHtml(item.source || '')}</span>
       </div>
       <div class="row-date">${escapeHtml(item.date || '')}</div>
+      ${favBtnHtml(item.id)}
     </article>`;
 }
 
@@ -1756,6 +2019,7 @@ function renderNewsCard(item, i) {
   const excHtml = autoLink(item.excerpt || item.summary || '');
   return `
     <article class="card-mag ${type}" onclick="openNewsModal('${escapeHtml(String(item.id))}')" style="animation-delay:${Math.min(i*30,360)}ms">
+      ${favBtnHtml(item.id)}
       <div class="mag-top">
         <span class="mag-badge ${type}">${type === 'official' ? 'Official' : type === 'negotiation' ? 'Negotiation' : 'Rumor'}</span>
         <span class="mag-date">${escapeHtml(item.date || '')}</span>
