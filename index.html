@@ -71,6 +71,33 @@
 
 <!-- GOOGLE ADSENSE · publisher ID Mercato Maestro -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4053268187610276" crossorigin="anonymous"></script>
+
+<!-- GOOGLE ANALYTICS 4 · sostituisci G-XXXXXXXXXX con il tuo Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
+</script>
+
+<!-- MICROSOFT CLARITY · sostituisci YOUR_CLARITY_ID -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "YOUR_CLARITY_ID");
+</script>
+
+<!-- GOOGLE SEARCH CONSOLE · incolla qui il tag di verifica -->
+<meta name="google-site-verification" content="INCOLLA_QUI_IL_CODICE_VERIFICA" />
+
+<!-- PWA · installable web app -->
+<link rel="manifest" href="manifest.json" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Mercato Maestro" />
 <style>
 /* ============================================================
    MERCATO MAESTRO · Palette EDITORIAL (Carbone + Oro Champagne)
