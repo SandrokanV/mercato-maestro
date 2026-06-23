@@ -3,10 +3,74 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mercato Maestro — Transfer Intelligence</title>
+
+<!-- ============================================================
+     SEO PRIMARIO
+     ============================================================ -->
+<title>Mercato Maestro — Notizie Calciomercato Live · Transfer Intelligence</title>
+<meta name="description" content="Tutte le notizie di calciomercato in tempo reale: rumor, trattative ufficiali e indiscrezioni dalle migliori fonti italiane. Premier League, Serie A, La Liga, Bundesliga, Ligue 1." />
+<meta name="keywords" content="calciomercato, transfer news, notizie calcio, serie a, premier league, la liga, bundesliga, ligue 1, mercato giocatori, trattative, rumor, ufficiali, transfermarkt" />
+<meta name="author" content="Mercato Maestro" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="googlebot" content="index, follow" />
+<meta name="theme-color" content="#0d1117" />
+<meta name="rating" content="general" />
+<link rel="canonical" href="https://mercato-maestro.github.io/" />
+
+<!-- OPEN GRAPH -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Mercato Maestro" />
+<meta property="og:title" content="Mercato Maestro — Notizie Calciomercato Live" />
+<meta property="og:description" content="Aggregatore di notizie di calciomercato in tempo reale dalle migliori fonti italiane. Rumor, trattative, ufficiali per i top 5 campionati europei." />
+<meta property="og:url" content="https://mercato-maestro.github.io/" />
+<meta property="og:locale" content="it_IT" />
+<meta property="og:image" content="https://mercato-maestro.github.io/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Mercato Maestro — Transfer Intelligence" />
+
+<!-- TWITTER CARD -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@mercatomaestro" />
+<meta name="twitter:title" content="Mercato Maestro — Calciomercato Live" />
+<meta name="twitter:description" content="Notizie di calciomercato in tempo reale, rumor e trattative dai top 5 campionati europei." />
+<meta name="twitter:image" content="https://mercato-maestro.github.io/og-image.jpg" />
+
+<!-- STRUCTURED DATA · Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Mercato Maestro",
+  "alternateName": "Transfer Intelligence",
+  "url": "https://mercato-maestro.github.io/",
+  "description": "Aggregatore di notizie di calciomercato in tempo reale dalle migliori fonti italiane.",
+  "inLanguage": "it-IT",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Mercato Maestro",
+    "logo": { "@type": "ImageObject", "url": "https://mercato-maestro.github.io/logo.png" }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://mercato-maestro.github.io/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<!-- FAVICON inline SVG (niente file esterno) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f0b961'/%3E%3Cstop offset='100%25' stop-color='%23a37a45'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='8' fill='%230d1117'/%3E%3Cpath d='M8 12 L20 6 L32 12 L32 26 L20 32 L8 26 Z' fill='none' stroke='url(%23g)' stroke-width='2' stroke-linejoin='round'/%3E%3Ctext x='20' y='25' font-family='Bebas Neue, sans-serif' font-size='14' font-weight='700' fill='url(%23g)' text-anchor='middle'%3EMM%3C/text%3E%3C/svg%3E" />
+
+<!-- PRECONNECT FONT + API -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://transfermarkt-api.fly.dev" crossorigin />
+<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- GOOGLE ADSENSE · publisher ID Mercato Maestro -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4053268187610276" crossorigin="anonymous"></script>
 <style>
 /* ============================================================
    MERCATO MAESTRO · Palette EDITORIAL (Carbone + Oro Champagne)
@@ -65,14 +129,31 @@ body::before {
   overflow-y: auto;
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
 }
+/* ---------- LOGO BLOCK ---------- */
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-mark {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(212,165,116,0.25));
+}
+.logo-text-block { min-width: 0; }
 .logo {
   font-family:'Bebas Neue', sans-serif;
-  font-size:24px; letter-spacing:0.06em; line-height:1;
+  font-size: 22px;
+  letter-spacing: 0.05em;
+  line-height: 0.95;
   color: var(--gold-bright);
+  text-transform: uppercase;
 }
+.logo .l1 { display:block; font-size: 22px; }
+.logo .l2 { display:block; font-size: 22px; color: var(--text); }
 .logo .sub {
-  display:block; margin-top:6px;
-  font-family:'IBM Plex Mono',monospace; font-size:9px;
+  display:block; margin-top:4px;
+  font-family:'IBM Plex Mono',monospace; font-size:8.5px;
   letter-spacing:0.3em; text-transform:uppercase;
   color: var(--text-faint); font-weight:500;
 }
@@ -504,6 +585,188 @@ h1 {
 }
 
 /* ============================================================
+   ADSENSE SLOTS
+   ============================================================ */
+.ad-slot {
+  background: var(--bg-elev);
+  border: 1px dashed var(--border-strong);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.ad-slot::before {
+  content: 'PUBBLICITÀ';
+  position: absolute;
+  top: 4px; left: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  z-index: 1;
+  pointer-events: none;
+}
+.ad-slot ins.adsbygoogle { display: block; width: 100%; }
+.ad-sidebar { margin: 6px 0; padding: 18px 4px 4px; min-height: 250px; }
+.ad-infeed {
+  margin: 4px 0;
+  padding: 18px 4px 4px;
+  min-height: 130px;
+  grid-column: 1 / -1;
+}
+.ad-modal {
+  margin: 14px 0 0;
+  padding: 18px 4px 4px;
+  min-height: 100px;
+}
+
+/* ============================================================
+   NEWS MODAL · lettura completa news sul sito
+   ============================================================ */
+.news-modal {
+  width:min(720px, 96vw);
+  max-height: 92vh;
+  overflow-y:auto;
+  background: var(--surface);
+  border:1px solid var(--gold-deep);
+  border-radius:14px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px var(--gold-glow);
+  position:relative;
+  animation: popIn 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+.news-modal-header {
+  position: relative;
+  padding: 28px 28px 18px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.nm-badge-row { display:flex; gap:8px; align-items:center; margin-bottom: 14px; flex-wrap:wrap; }
+.nm-badge {
+  font-family:'IBM Plex Mono',monospace; font-size:9px;
+  font-weight:600; letter-spacing:0.16em; text-transform:uppercase;
+  padding:4px 10px; border-radius:4px;
+  display:inline-flex; align-items:center; gap:5px;
+}
+.nm-badge.official    { background: var(--green-dim); color: var(--green); }
+.nm-badge.rumor       { background: var(--gold-glow); color: var(--gold-bright); }
+.nm-badge.negotiation { background: var(--amber-dim); color: var(--amber); }
+.nm-badge::before { content:''; width:5px; height:5px; border-radius:50%; background: currentColor; }
+.nm-meta-time {
+  font-family:'IBM Plex Mono',monospace; font-size:10px;
+  color: var(--text-faint); letter-spacing:0.1em;
+  margin-left: auto;
+}
+.nm-title {
+  font-family:'Inter',sans-serif;
+  font-size: 26px; font-weight: 800;
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.nm-byline {
+  display:flex; align-items:center; gap:10px;
+}
+.nm-byline-av {
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Bebas Neue',sans-serif; font-size:12px;
+  flex-shrink:0;
+}
+.nm-byline-info { display:flex; flex-direction:column; }
+.nm-byline-name { font-size:13px; font-weight:600; color: var(--text); line-height:1.2; }
+.nm-byline-role {
+  font-family:'IBM Plex Mono',monospace; font-size:9px;
+  color: var(--text-faint); letter-spacing:0.12em;
+}
+.news-modal-body {
+  padding: 22px 28px 28px 28px;
+}
+.nm-excerpt {
+  font-size: 16px; line-height: 1.7;
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.nm-content {
+  font-size: 15px; line-height: 1.8;
+  color: var(--text-muted);
+}
+.nm-content p { margin-bottom: 14px; }
+.nm-content p:last-child { margin-bottom: 0; }
+.nm-rel-row {
+  display:flex; align-items:center; gap:10px;
+  margin: 18px 0;
+  padding: 12px 14px;
+  background: var(--bg-elev);
+  border:1px solid var(--border);
+  border-radius: 8px;
+}
+.nm-rel-row .lbl {
+  font-family:'IBM Plex Mono',monospace; font-size:9px;
+  color: var(--text-faint); letter-spacing:0.16em;
+  text-transform:uppercase;
+}
+.nm-rel-row .track { flex:1; height:4px; background: var(--border-strong); border-radius:3px; overflow:hidden; }
+.nm-rel-row .fill { height:100%; }
+.nm-rel-row .pct {
+  font-family:'IBM Plex Mono',monospace; font-size:11px;
+  font-weight:700; min-width: 38px; text-align:right;
+}
+.nm-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+.nm-tag {
+  padding:4px 10px;
+  border-radius:14px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; font-weight:500; letter-spacing:0.06em;
+  background: var(--bg-elev); color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.nm-tag.lg { color: var(--gold-bright); border-color: var(--gold-deep); background: var(--gold-glow); }
+
+.nm-footer {
+  display: flex; gap: 10px;
+  margin-top: 20px; padding-top: 18px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.nm-btn {
+  flex: 1;
+  min-width: 160px;
+  padding: 11px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  text-align: center;
+}
+.nm-btn.primary { background: var(--gold); color: #1a1006; }
+.nm-btn.primary:hover { background: var(--gold-bright); transform: translateY(-1px); }
+.nm-share-row { display:flex; gap:6px; align-items:center; }
+.nm-share-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all 0.18s ease;
+}
+.nm-share-btn:hover { color: var(--gold-bright); border-color: var(--gold-deep); transform: translateY(-2px); }
+.nm-share-label {
+  font-family:'IBM Plex Mono',monospace; font-size:9px;
+  letter-spacing:0.16em; text-transform:uppercase;
+  color: var(--text-faint);
+  margin-right: 4px;
+}
+
+/* ============================================================
    MODAL POPUP (entità)
    ============================================================ */
 .modal-overlay {
@@ -736,8 +999,38 @@ h1 {
 <!-- ============= SIDEBAR ============= -->
 <aside class="sidebar" id="sidebar">
   <div>
-    <div class="logo">MERCATO MAESTRO<span class="sub">Transfer Intelligence</span></div>
-    <div class="logo-live">LIVE FEED</div>
+    <div class="logo-block">
+      <svg class="logo-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="lg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f0b961"/>
+            <stop offset="100%" stop-color="#a37a45"/>
+          </linearGradient>
+          <linearGradient id="lg-grad-light" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fbe8c5"/>
+            <stop offset="100%" stop-color="#d4a574"/>
+          </linearGradient>
+        </defs>
+        <!-- esagono scudo -->
+        <path d="M24 4 L42 13 L42 35 L24 44 L6 35 L6 13 Z"
+              fill="#0d1117" stroke="url(#lg-grad)" stroke-width="2" stroke-linejoin="round"/>
+        <!-- pallone stilizzato (cerchio + pentagoni) -->
+        <circle cx="24" cy="20" r="6" fill="none" stroke="url(#lg-grad-light)" stroke-width="1.4"/>
+        <path d="M24 14 L26.5 18 L24 21 L21.5 18 Z" fill="url(#lg-grad-light)" opacity="0.85"/>
+        <path d="M18 19 L20 21.5 M28.5 19.5 L30 21.5" stroke="url(#lg-grad-light)" stroke-width="1.1" stroke-linecap="round"/>
+        <!-- Monogramma MM -->
+        <text x="24" y="38" font-family="Bebas Neue, sans-serif" font-size="11" font-weight="700"
+              fill="url(#lg-grad)" text-anchor="middle" letter-spacing="0.08em">MM</text>
+      </svg>
+      <div class="logo-text-block">
+        <h1 class="logo" style="margin:0">
+          <span class="l1">Mercato</span>
+          <span class="l2">Maestro</span>
+          <span class="sub">Transfer Intelligence</span>
+        </h1>
+      </div>
+    </div>
+    <div class="logo-live" style="margin-top:10px">LIVE FEED</div>
   </div>
 
   <!-- FILTRI NEWS -->
@@ -756,38 +1049,6 @@ h1 {
     <button class="nav-item" data-filter="type" data-value="negotiation"><span class="dot" style="background: var(--amber)"></span> Trattative</button>
   </div>
 
-  <!-- FILTRI GIOCATORI -->
-  <div class="nav-section hidden" id="filters-players">
-    <div class="section-title">Cerca un giocatore</div>
-    <div style="padding:6px 12px; font-size:11px; color:var(--text-muted); line-height:1.55">
-      Scrivi un nome nella barra di ricerca in alto.
-      <br/><br/>
-      I dati arrivano in tempo reale da <strong style="color:var(--gold-bright)">Transfermarkt</strong>.
-    </div>
-    <div class="section-title" style="margin-top:16px">Suggerimenti</div>
-    <button class="nav-item" onclick="seedSearch('Mbappé')">⭐ Mbappé</button>
-    <button class="nav-item" onclick="seedSearch('Haaland')">⭐ Haaland</button>
-    <button class="nav-item" onclick="seedSearch('Bellingham')">⭐ Bellingham</button>
-    <button class="nav-item" onclick="seedSearch('Yamal')">⭐ Yamal</button>
-    <button class="nav-item" onclick="seedSearch('Tonali')">⭐ Tonali</button>
-    <button class="nav-item" onclick="seedSearch('Lautaro')">⭐ Lautaro</button>
-  </div>
-
-  <!-- FILTRI SQUADRE -->
-  <div class="nav-section hidden" id="filters-teams">
-    <div class="section-title">Cerca una squadra</div>
-    <div style="padding:6px 12px; font-size:11px; color:var(--text-muted); line-height:1.55">
-      Scrivi il nome di un club nella barra di ricerca.
-    </div>
-    <div class="section-title" style="margin-top:16px">Top Club</div>
-    <button class="nav-item" onclick="seedSearch('Real Madrid')">🛡️ Real Madrid</button>
-    <button class="nav-item" onclick="seedSearch('Manchester City')">🛡️ Man City</button>
-    <button class="nav-item" onclick="seedSearch('Inter')">🛡️ Inter</button>
-    <button class="nav-item" onclick="seedSearch('Barcelona')">🛡️ Barcelona</button>
-    <button class="nav-item" onclick="seedSearch('Bayern')">🛡️ Bayern</button>
-    <button class="nav-item" onclick="seedSearch('PSG')">🛡️ PSG</button>
-  </div>
-
   <!-- FILTRI COMPETIZIONI -->
   <div class="nav-section hidden" id="filters-leagues">
     <div class="section-title">Continenti</div>
@@ -795,6 +1056,16 @@ h1 {
     <button class="nav-item" data-filter="continent" data-value="europe"><span class="dot" style="background:#3b82f6"></span> Europa</button>
     <button class="nav-item" data-filter="continent" data-value="south-america"><span class="dot" style="background:#10b981"></span> Sud America</button>
     <button class="nav-item" data-filter="continent" data-value="other"><span class="dot" style="background:#a371f7"></span> Resto del mondo</button>
+  </div>
+
+  <!-- AD SLOT · sidebar (300×250) -->
+  <div class="ad-slot ad-sidebar" aria-label="Pubblicità">
+    <ins class="adsbygoogle"
+         style="display:block; min-height:250px;"
+         data-ad-client="ca-pub-4053268187610276"
+         data-ad-slot="0000000001"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
   </div>
 
   <div class="social-section">
@@ -816,18 +1087,16 @@ h1 {
 <main class="main">
   <div class="topbar">
     <div>
-      <h1 id="topbar-heading">Transfer Wire</h1>
+      <h2 id="topbar-heading" style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:0.05em; color:var(--text); line-height:1; margin:0">Transfer Wire</h2>
       <div class="subtitle" id="topbar-date">CARICAMENTO…</div>
     </div>
     <div class="stats" id="stats-bar"></div>
   </div>
 
-  <div class="tabs">
+  <nav class="tabs" role="navigation" aria-label="Sezioni principali">
     <button class="tab active" data-tab="news">📰 News <span class="tab-count" id="tc-news">0</span></button>
-    <button class="tab" data-tab="players">👤 Giocatori</button>
-    <button class="tab" data-tab="teams">🛡️ Squadre</button>
     <button class="tab" data-tab="leagues">🏆 Competizioni</button>
-  </div>
+  </nav>
 
   <div class="toolbar">
     <div class="search-wrap">
@@ -843,8 +1112,6 @@ h1 {
   </div>
 
   <div class="view" id="view-news"></div>
-  <div class="view hidden" id="view-players"></div>
-  <div class="view hidden" id="view-teams"></div>
   <div class="view hidden" id="view-leagues"></div>
 </main>
 
@@ -964,13 +1231,26 @@ const cache = new Map();
    FONTI · stili avatar
    ============================ */
 const sourceStyles = {
-  'Tuttomercatoweb':     { bg:'#1e3a5f', fg:'#79c0ff', initials:'TM' },
-  'Calciomercato.com':   { bg:'#0d4a39', fg:'#3fb950', initials:'CM' },
-  'Football Italia':     { bg:'#5a2c12', fg:'#f0883e', initials:'FI' },
-  'Goal Italia':         { bg:'#2d1b6b', fg:'#a371f7', initials:'GI' },
-  'Gazzetta':            { bg:'#5a1313', fg:'#f85149', initials:'GdS' },
-  'Corriere Sport':      { bg:'#1e3a8a', fg:'#79c0ff', initials:'CS' },
-  'La Repubblica Sport': { bg:'#3d1f5f', fg:'#b388ff', initials:'RS' }
+  'Tuttomercatoweb': { color: '#1e3a5f', ring: '#60a5fa', initials: 'TM' },
+  'Calciomercato.com': { color: '#065f46', ring: '#10b981', initials: 'CM' },
+  'Football Italia': { color: '#9a3412', ring: '#f97316', initials: 'FI' },
+  'Goal Italia': { color: '#1e1b4b', ring: '#818cf8', initials: 'GI' },
+  'Gazzetta': { color: '#991b1b', ring: '#f87171', initials: 'GdS' },
+  'Corriere Sport': { color: '#1e40af', ring: '#3b82f6', initials: 'CS' },
+  'La Repubblica Sport': { color: '#6b21a8', ring: '#a855f7', initials: 'RS' },
+  'Sky Sport': { color: '#0ea5e9', ring: '#38bdf8', initials: 'Sky' },
+  'Di Marzio': { color: '#dc2626', ring: '#f87171', initials: 'DM' },
+  'Tuttosport': { color: '#f59e0b', ring: '#fbbf24', initials: 'TS' },
+  'BBC Sport Football': { color: '#b91c1c', ring: '#f87171', initials: 'BBC' },
+  'ESPN FC': { color: '#dc2626', ring: '#f87171', initials: 'ESPN' },
+  'The Guardian Football': { color: '#0369a1', ring: '#38bdf8', initials: 'Guard' },
+  'Sky Sports Transfer': { color: '#0ea5e9', ring: '#38bdf8', initials: 'Sky' },
+  'Goal International': { color: '#1e1b4b', ring: '#818cf8', initials: 'Goal' },
+  'Marca': { color: '#ea580c', ring: '#fb923c', initials: 'Marca' },
+  'L\'Equipe': { color: '#dc2626', ring: '#f87171', initials: 'L\'Eq' },
+  'Kicker': { color: '#16a34a', ring: '#4ade80', initials: 'Kick' },
+  'Fabrizio Romano': { color: '#7c3aed', ring: '#a78bfa', initials: 'FR' },
+  'David Ornstein': { color: '#0891b2', ring: '#22d3ee', initials: 'DO' }
 };
 function srcStyle(s) {
   return sourceStyles[s] || { bg: 'var(--border-strong)', fg: 'var(--gold-bright)', initials: (s||'??').substring(0,2).toUpperCase() };
@@ -1107,16 +1387,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Search input (debounced for live API)
   let searchTimer = null;
   document.getElementById('search').addEventListener('input', e => {
     searchQuery = e.target.value.trim();
     clearTimeout(searchTimer);
-    if (activeTab === 'players' || activeTab === 'teams') {
-      searchTimer = setTimeout(() => renderActive(), 350);
-    } else {
-      renderActive();
-    }
+    renderActive();
   });
 
   // Sort
@@ -1162,21 +1437,14 @@ function setTab(tab) {
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
 
   document.getElementById('filters-news').classList.toggle('hidden',    tab !== 'news');
-  document.getElementById('filters-players').classList.toggle('hidden', tab !== 'players');
-  document.getElementById('filters-teams').classList.toggle('hidden',   tab !== 'teams');
   document.getElementById('filters-leagues').classList.toggle('hidden', tab !== 'leagues');
 
   document.getElementById('view-news').classList.toggle('hidden',    tab !== 'news');
-  document.getElementById('view-players').classList.toggle('hidden', tab !== 'players');
-  document.getElementById('view-teams').classList.toggle('hidden',   tab !== 'teams');
   document.getElementById('view-leagues').classList.toggle('hidden', tab !== 'leagues');
 
-  // heading + placeholder ricerca
   const cfg = {
-    news:    { h:'Transfer Wire',     ph:"Cerca nelle news: 'Tonali', 'Real Madrid'…" },
-    players: { h:'Player Database',   ph:"Cerca un giocatore (es: 'Mbappé', 'Bellingham')…" },
-    teams:   { h:'Squad Database',    ph:"Cerca una squadra (es: 'Real Madrid', 'Inter')…" },
-    leagues: { h:'Competizioni',      ph:"Cerca una competizione…" }
+    news:    { h:'Transfer Wire',  ph:"Cerca nelle news: 'Tonali', 'Real Madrid'…" },
+    leagues: { h:'Competizioni',   ph:"Cerca una competizione…" }
   }[tab];
   document.getElementById('topbar-heading').textContent = cfg.h;
   document.getElementById('search').placeholder = cfg.ph;
@@ -1187,8 +1455,6 @@ function setTab(tab) {
   const sort = document.getElementById('sort');
   const opts = {
     news:    [['newest','Più recenti'],['oldest','Meno recenti'],['reliability','Per affidabilità']],
-    players: [['relevance','Più pertinenti']],
-    teams:   [['relevance','Più pertinenti']],
     leagues: [['name','Nome A–Z'],['clubs','N° club']]
   }[tab];
   sort.innerHTML = opts.map(([v,l]) => `<option value="${v}">${l}</option>`).join('');
@@ -1198,12 +1464,6 @@ function setTab(tab) {
   document.getElementById('view-toggle').style.display = (tab === 'leagues') ? 'none' : '';
 
   renderStats();
-  renderActive();
-}
-
-function seedSearch(q) {
-  document.getElementById('search').value = q;
-  searchQuery = q;
   renderActive();
 }
 
@@ -1221,16 +1481,6 @@ function renderStats() {
       <div class="stat"><div class="stat-v green">${off}</div><div class="stat-l">Ufficiali</div></div>
       <div class="stat"><div class="stat-v amber">${neg}</div><div class="stat-l">Trattative</div></div>
       <div class="stat"><div class="stat-v">${rum}</div><div class="stat-l">Rumors</div></div>`;
-  } else if (activeTab === 'players') {
-    bar.innerHTML = `
-      <div class="stat"><div class="stat-v gold">LIVE</div><div class="stat-l">Transfermarkt</div></div>
-      <div class="stat"><div class="stat-v">~1M</div><div class="stat-l">Giocatori</div></div>
-      <div class="stat"><div class="stat-v green">240</div><div class="stat-l">Federazioni</div></div>`;
-  } else if (activeTab === 'teams') {
-    bar.innerHTML = `
-      <div class="stat"><div class="stat-v gold">LIVE</div><div class="stat-l">Transfermarkt</div></div>
-      <div class="stat"><div class="stat-v">~50K</div><div class="stat-l">Club</div></div>
-      <div class="stat"><div class="stat-v green">600+</div><div class="stat-l">Competizioni</div></div>`;
   } else {
     bar.innerHTML = `
       <div class="stat"><div class="stat-v gold">${COMPETITIONS.length}</div><div class="stat-l">Competizioni</div></div>
@@ -1287,8 +1537,6 @@ function getFilteredNews() {
 
 function renderActive() {
   if (activeTab === 'news')    renderNews();
-  if (activeTab === 'players') renderPlayersSearch();
-  if (activeTab === 'teams')   renderTeamsSearch();
   if (activeTab === 'leagues') renderLeagues();
 }
 
@@ -1302,11 +1550,40 @@ function renderNews() {
     return;
   }
 
+  // Inserisce in-feed AdSense ogni 6 risultati
+  const renderer = viewMode === 'list' ? renderNewsRow : renderNewsCard;
+  const html = [];
+  list.forEach((item, i) => {
+    html.push(renderer(item, i));
+    if ((i + 1) % 6 === 0 && i < list.length - 1) html.push(adInfeedHtml(i));
+  });
+
   if (viewMode === 'list') {
-    wrap.innerHTML = `<div class="list">${list.map(renderNewsRow).join('')}</div>`;
+    wrap.innerHTML = `<div class="list">${html.join('')}</div>`;
   } else {
-    wrap.innerHTML = `<div class="grid">${list.map(renderNewsCard).join('')}</div>`;
+    wrap.innerHTML = `<div class="grid">${html.join('')}</div>`;
   }
+  pushAdsense();
+}
+
+function adInfeedHtml(idx) {
+  return `
+    <div class="ad-slot ad-infeed" aria-label="Pubblicità">
+      <ins class="adsbygoogle"
+           style="display:block; min-height:120px;"
+           data-ad-client="ca-pub-4053268187610276"
+           data-ad-slot="0000000002"
+           data-ad-format="fluid"
+           data-ad-layout-key="-fb+5w+4e-db+86"
+           data-full-width-responsive="true"></ins>
+    </div>`;
+}
+
+function pushAdsense() {
+  // Push solo per gli slot non ancora inizializzati
+  document.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status])').forEach(() => {
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+  });
 }
 
 function renderNewsRow(item, i) {
@@ -1317,12 +1594,11 @@ function renderNewsRow(item, i) {
   const titleHtml = autoLink(item.title || '');
   const lg = item.league || '';
   const lgHtml = lg ? autoLink(lg) : '';
-  // estrai meta entità dal titolo per la riga meta
   const metaParts = [];
   if (lgHtml) metaParts.push(lgHtml);
   if (item.source) metaParts.push(escapeHtml(item.source));
   return `
-    <article class="news-row ${type}" onclick="window.open('${escapeHtml(item.link || '#')}','_blank','noopener')" style="animation-delay:${Math.min(i*20,300)}ms">
+    <article class="news-row ${type}" onclick="openNewsModal('${escapeHtml(String(item.id))}')" style="animation-delay:${Math.min(i*20,300)}ms">
       <div class="row-type ${type}">● ${type === 'official' ? 'Official' : type === 'negotiation' ? 'Negotiation' : 'Rumor'}</div>
       <div class="row-title-block">
         <div class="row-title">${titleHtml}</div>
@@ -1349,7 +1625,7 @@ function renderNewsCard(item, i) {
   const titleHtml = autoLink(item.title || '');
   const excHtml = autoLink(item.excerpt || item.summary || '');
   return `
-    <article class="card-mag ${type}" onclick="window.open('${escapeHtml(item.link || '#')}','_blank','noopener')" style="animation-delay:${Math.min(i*30,360)}ms">
+    <article class="card-mag ${type}" onclick="openNewsModal('${escapeHtml(String(item.id))}')" style="animation-delay:${Math.min(i*30,360)}ms">
       <div class="mag-top">
         <span class="mag-badge ${type}">${type === 'official' ? 'Official' : type === 'negotiation' ? 'Negotiation' : 'Rumor'}</span>
         <span class="mag-date">${escapeHtml(item.date || '')}</span>
@@ -1372,86 +1648,111 @@ function renderNewsCard(item, i) {
 }
 
 /* ============================
-   PLAYERS / TEAMS · live search Transfermarkt
+   NEWS MODAL · lettura completa
    ============================ */
-async function renderPlayersSearch() {
-  const wrap = document.getElementById('view-players');
-  if (!searchQuery) {
-    wrap.innerHTML = emptyState('Cerca un giocatore', 'Scrivi un nome nella barra di ricerca in alto (es. "Mbappé"). I dati vengono recuperati live da Transfermarkt.');
-    document.getElementById('result-count').textContent = '';
-    return;
-  }
-  wrap.innerHTML = loadingState('Ricerca su Transfermarkt…');
-  const results = await tmSearch('players', searchQuery);
-  if (!results) {
-    wrap.innerHTML = errorState(`Impossibile contattare Transfermarkt per "${escapeHtml(searchQuery)}". Riprova tra qualche istante.`);
-    return;
-  }
-  if (results.length === 0) {
-    wrap.innerHTML = emptyState('Nessun risultato', `Nessun giocatore trovato per "${escapeHtml(searchQuery)}".`);
-    return;
-  }
-  document.getElementById('result-count').textContent = `${results.length} giocator${results.length !== 1 ? 'i' : 'e'}`;
-  wrap.innerHTML = `<div class="list">${results.map(renderPlayerRow).join('')}</div>`;
+function openNewsModal(id) {
+  const item = allNewsData.find(n => String(n.id) === String(id));
+  if (!item) return;
+  showModal();
+  const overlay = document.getElementById('modal-overlay');
+  const inner = overlay.querySelector('.modal');
+  // Trasforma in news-modal
+  inner.classList.add('news-modal');
+  document.getElementById('modal-body').innerHTML = renderNewsModalContent(item);
+  pushAdsense();
 }
 
-function renderPlayerRow(p, i) {
-  const ini = (p.name || '??').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-  const value = p.marketValue ? formatMV(p.marketValue) : '—';
-  const clubName = (p.club && p.club.name) ? p.club.name : '';
-  const pos = p.position || '';
-  const nat = (p.nationalities && p.nationalities[0]) || '';
-  const flag = countryFlag(nat);
+function renderNewsModalContent(item) {
+  const type = normalizeType(item.type);
+  const rPct = item.reliability || 0;
+  const rCol = reliabilityColor(rPct);
+  const src = srcStyle(item.source);
+  const titleHtml = autoLink(item.title || '');
+  const excHtml = autoLink(item.excerpt || item.summary || '');
+  const lg = item.league || '';
+  // fullContent può essere un singolo paragrafo o array; rimuoviamo HTML grezzo
+  let bodyHtml = '';
+  const raw = item.fullContent || item.content || item.body || '';
+  if (raw) {
+    const paragraphs = String(raw).split(/\n{2,}|\r\n{2,}/).map(p => p.trim()).filter(Boolean);
+    bodyHtml = paragraphs.map(p => `<p>${autoLink(p)}</p>`).join('');
+  }
+  const shareUrl = encodeURIComponent(item.link || window.location.href);
+  const shareTitle = encodeURIComponent(item.title || 'Mercato Maestro');
   return `
-    <article class="news-row" onclick="openPlayerById('${escapeHtml(p.id)}', '${escapeHtml(p.name)}')" style="animation-delay:${Math.min(i*15,300)}ms; grid-template-columns: 56px 1fr 140px 100px;">
-      <div class="modal-photo" style="width:42px;height:42px;font-size:14px;border-width:1px">${ini}</div>
-      <div class="row-title-block">
-        <div class="row-title">${flag ? flag + ' ' : ''}${escapeHtml(p.name)}</div>
-        <div class="row-meta">${escapeHtml(pos)} ${clubName ? `<span class="sep">·</span> ${escapeHtml(clubName)}` : ''} ${p.age ? `<span class="sep">·</span> ${escapeHtml(String(p.age))} anni` : ''}</div>
+    <div class="news-modal-header">
+      <div class="nm-badge-row">
+        <span class="nm-badge ${type}">${type === 'official' ? 'Official' : type === 'negotiation' ? 'Negotiation' : 'Rumor'}</span>
+        ${lg ? `<span class="nm-badge" style="background:var(--bg-elev);color:var(--text-muted);border:1px solid var(--border)">${escapeHtml(lg)}</span>` : ''}
+        <span class="nm-meta-time">${escapeHtml(item.date || '')}</span>
       </div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold-bright);text-align:right">${value}</div>
-      <div style="text-align:right">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.14em">TM →</span>
+      <h2 class="nm-title">${titleHtml}</h2>
+      <div class="nm-byline">
+        <div class="nm-byline-av" style="background:${src.bg};color:${src.fg}">${src.initials}</div>
+        <div class="nm-byline-info">
+          <span class="nm-byline-name">${escapeHtml(item.source || 'Fonte')}</span>
+          <span class="nm-byline-role">REPORTER · TRANSFER WIRE</span>
+        </div>
       </div>
-    </article>`;
+    </div>
+    <div class="news-modal-body">
+      ${excHtml ? `<div class="nm-excerpt">${excHtml}</div>` : ''}
+      ${bodyHtml ? `<div class="nm-content">${bodyHtml}</div>` : (excHtml ? '' : `<div class="nm-content"><p style="color:var(--text-faint); font-style:italic">Contenuto completo dell'articolo disponibile alla fonte originale. Clicca il pulsante qui sotto per leggere l'articolo integrale.</p></div>`)}
+      <div class="nm-rel-row">
+        <span class="lbl">Reliability score</span>
+        <div class="track"><div class="fill" style="width:${rPct}%;background:${rCol}"></div></div>
+        <span class="pct" style="color:${rCol}">${rPct}%</span>
+      </div>
+
+      <!-- AD SLOT in-modal -->
+      <div class="ad-slot ad-modal" aria-label="Pubblicità">
+        <ins class="adsbygoogle"
+             style="display:block; min-height:90px;"
+             data-ad-client="ca-pub-4053268187610276"
+             data-ad-slot="0000000003"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
+
+      <div class="nm-footer">
+        ${item.link ? `<a class="nm-btn primary" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">📰 Apri articolo originale →</a>` : ''}
+        <div class="nm-share-row" style="${item.link ? '' : 'flex:1; justify-content:flex-end'}">
+          <span class="nm-share-label">Condividi</span>
+          <button class="nm-share-btn" onclick="shareTo('telegram', '${shareUrl}', '${shareTitle}')" aria-label="Condividi su Telegram" title="Telegram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.296c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.925z"/></svg>
+          </button>
+          <button class="nm-share-btn" onclick="shareTo('twitter', '${shareUrl}', '${shareTitle}')" aria-label="Condividi su X/Twitter" title="X / Twitter">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </button>
+          <button class="nm-share-btn" onclick="shareTo('whatsapp', '${shareUrl}', '${shareTitle}')" aria-label="Condividi su WhatsApp" title="WhatsApp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.711.306 1.265.489 1.697.626.713.226 1.362.194 1.875.118.572-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413z"/></svg>
+          </button>
+          <button class="nm-share-btn" onclick="copyShareLink('${shareUrl}')" aria-label="Copia link" title="Copia link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
 }
 
-async function renderTeamsSearch() {
-  const wrap = document.getElementById('view-teams');
-  if (!searchQuery) {
-    wrap.innerHTML = emptyState('Cerca una squadra', 'Scrivi il nome di un club (es. "Real Madrid"). I dati vengono recuperati live da Transfermarkt.');
-    document.getElementById('result-count').textContent = '';
-    return;
-  }
-  wrap.innerHTML = loadingState('Ricerca squadre…');
-  const results = await tmSearch('clubs', searchQuery);
-  if (!results) {
-    wrap.innerHTML = errorState(`Impossibile contattare Transfermarkt per "${escapeHtml(searchQuery)}".`);
-    return;
-  }
-  if (results.length === 0) {
-    wrap.innerHTML = emptyState('Nessuna squadra', `Nessun club trovato per "${escapeHtml(searchQuery)}".`);
-    return;
-  }
-  document.getElementById('result-count').textContent = `${results.length} squad${results.length !== 1 ? 're' : 'ra'}`;
-  wrap.innerHTML = `<div class="list">${results.map(renderClubRow).join('')}</div>`;
+function shareTo(platform, url, title) {
+  const u = decodeURIComponent(url);
+  const t = decodeURIComponent(title);
+  let target = '';
+  if (platform === 'telegram') target = `https://t.me/share/url?url=${encodeURIComponent(u)}&text=${encodeURIComponent(t)}`;
+  if (platform === 'twitter')  target = `https://twitter.com/intent/tweet?url=${encodeURIComponent(u)}&text=${encodeURIComponent(t)}`;
+  if (platform === 'whatsapp') target = `https://wa.me/?text=${encodeURIComponent(t + ' — ' + u)}`;
+  if (target) window.open(target, '_blank', 'noopener,width=600,height=520');
 }
-
-function renderClubRow(c, i) {
-  const ini = (c.name || '??').split(' ').filter(Boolean).map(w => w[0]).slice(0,3).join('').toUpperCase();
-  const flag = c.country ? countryFlag(c.country) : '';
-  return `
-    <article class="news-row" onclick="openClubById('${escapeHtml(c.id)}', '${escapeHtml(c.name)}')" style="animation-delay:${Math.min(i*15,300)}ms; grid-template-columns: 56px 1fr 140px 100px;">
-      <div class="modal-photo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#1e3a5f,#0d4a39);color:#79c0ff;border-width:1px">${ini}</div>
-      <div class="row-title-block">
-        <div class="row-title">${flag ? flag + ' ' : ''}${escapeHtml(c.name)}</div>
-        <div class="row-meta">${c.country ? escapeHtml(c.country) : ''} ${c.squad ? `<span class="sep">·</span> ${c.squad} giocatori` : ''}</div>
-      </div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#79c0ff;text-align:right">${c.marketValue ? formatMV(c.marketValue) : '—'}</div>
-      <div style="text-align:right">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.14em">TM →</span>
-      </div>
-    </article>`;
+function copyShareLink(url) {
+  const u = decodeURIComponent(url);
+  navigator.clipboard?.writeText(u).then(() => {
+    const btn = event.currentTarget;
+    if (!btn) return;
+    const old = btn.innerHTML;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ea043" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>';
+    setTimeout(() => btn.innerHTML = old, 1400);
+  });
 }
 
 /* ============================
@@ -1730,10 +2031,17 @@ function slugify(s) {
 /* ============================
    MODAL UTILS
    ============================ */
-function showModal() { document.getElementById('modal-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function showModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
 function closeModal(e) {
   if (e && e.target && !e.target.classList.contains('modal-overlay') && e.type !== undefined && e.type !== 'click') return;
-  document.getElementById('modal-overlay').classList.remove('open');
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.remove('open');
+  // resetta classi modal (news-modal vs entity)
+  const inner = overlay.querySelector('.modal');
+  if (inner) inner.classList.remove('news-modal');
   document.body.style.overflow='';
 }
 
