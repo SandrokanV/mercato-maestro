@@ -1,0 +1,44 @@
+[
+  {
+    "id": "demo-1",
+    "title": "Benvenuto su Mercato Maestro",
+    "type": "official",
+    "league": "serie-a",
+    "date": "2026-02-03T09:00:00Z",
+    "source": "Mercato Maestro",
+    "source_url": "https://mercato-maestro.github.io/",
+    "summary": "Il nuovo aggregatore di calciomercato italiano è online. Notizie aggiornate in tempo reale dai migliori portali.",
+    "player": "—",
+    "club_from": "—",
+    "club_to": "—",
+    "reliability": 100
+  },
+  {
+    "id": "demo-2",
+    "title": "Setup completo: dark/light mode + PWA installabile",
+    "type": "negotiation",
+    "league": "premier-league",
+    "date": "2026-02-03T10:00:00Z",
+    "source": "Mercato Maestro",
+    "source_url": "https://mercato-maestro.github.io/",
+    "summary": "Demo: testa il toggle tema e l'installazione PWA dal menu del browser.",
+    "player": "Demo Player",
+    "club_from": "Manchester United",
+    "club_to": "Real Madrid",
+    "reliability": 75
+  },
+  {
+    "id": "demo-3",
+    "title": "Rumor: la hero section è una scena viva",
+    "type": "rumor",
+    "league": "la-liga",
+    "date": "2026-02-03T11:00:00Z",
+    "source": "Mercato Maestro",
+    "source_url": "https://mercato-maestro.github.io/",
+    "summary": "Anteprima del layout editoriale con palette Carbone + Oro Champagne.",
+    "player": "Lamine Yamal",
+    "club_from": "Barcellona",
+    "club_to": "PSG",
+    "reliability": 45
+  }
+]

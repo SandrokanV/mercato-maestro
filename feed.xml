@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Mercato Maestro — Transfer Intelligence</title>
+    <link>https://mercato-maestro.github.io/</link>
+    <atom:link href="https://mercato-maestro.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <description>L'intelligence del calciomercato in tempo reale, dalle migliori fonti italiane. Rumor, trattative e ufficiali per i top 5 campionati europei.</description>
+    <language>it-IT</language>
+    <copyright>© 2026 Mercato Maestro</copyright>
+    <managingEditor>noreply@mercato-maestro.github.io (Mercato Maestro)</managingEditor>
+    <webMaster>noreply@mercato-maestro.github.io (Mercato Maestro)</webMaster>
+    <category>Sports</category>
+    <category>Football</category>
+    <category>Calciomercato</category>
+    <ttl>30</ttl>
+    <image>
+      <url>https://mercato-maestro.github.io/logo-192.png</url>
+      <title>Mercato Maestro</title>
+      <link>https://mercato-maestro.github.io/</link>
+      <width>192</width>
+      <height>192</height>
+    </image>
+
+    <!-- Esempio item · sostituisci con il tuo build script che legge news.json -->
+    <item>
+      <title>Benvenuto su Mercato Maestro</title>
+      <link>https://mercato-maestro.github.io/</link>
+      <guid isPermaLink="false">mercato-maestro-welcome-2026</guid>
+      <pubDate>Mon, 03 Feb 2026 09:00:00 +0100</pubDate>
+      <description><![CDATA[L'aggregatore italiano di notizie di calciomercato in tempo reale è online. Premier League, Serie A, La Liga, Bundesliga, Ligue 1.]]></description>
+      <category>News</category>
+    </item>
+  </channel>
+</rss>
