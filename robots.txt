@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /*.json$
+
+# AdSense crawler
+User-agent: Mediapartners-Google
+Allow: /
+
+# Google generic
+User-agent: Googlebot
+Allow: /
+
+# Sitemap
+Sitemap: https://mercato-maestro.github.io/sitemap.xml

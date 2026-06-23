@@ -585,6 +585,86 @@ h1 {
 }
 
 /* ============================================================
+   COOKIE BANNER GDPR
+   ============================================================ */
+.cookie-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 500;
+  background: var(--surface);
+  border-top: 2px solid var(--gold);
+  padding: 18px 28px;
+  box-shadow: 0 -12px 40px rgba(0,0,0,0.5);
+  display: none;
+  animation: slideUp 0.35s ease;
+}
+.cookie-banner.show { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.cookie-banner-text {
+  flex: 1; min-width: 280px;
+  font-size: 13px; line-height: 1.55;
+  color: var(--text-muted);
+}
+.cookie-banner-text strong { color: var(--gold-bright); font-weight: 700; }
+.cookie-banner-text a { color: var(--gold-bright); text-decoration: underline; }
+.cookie-banner-actions {
+  display: flex; gap: 8px;
+  flex-wrap: wrap;
+}
+.cookie-btn {
+  padding: 10px 18px;
+  border-radius: 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+.cookie-btn.accept { background: var(--gold); color: #1a1006; }
+.cookie-btn.accept:hover { background: var(--gold-bright); transform: translateY(-1px); }
+.cookie-btn.reject {
+  background: transparent; color: var(--text-muted);
+  border-color: var(--border-strong);
+}
+.cookie-btn.reject:hover { color: var(--text); border-color: var(--gold-deep); }
+@media (max-width:600px){
+  .cookie-banner { padding: 14px 16px; }
+  .cookie-banner-text { font-size: 12px; }
+  .cookie-banner-actions { width: 100%; }
+  .cookie-btn { flex: 1; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  margin-top: auto;
+  padding: 24px 28px 28px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 14px;
+}
+.footer-left {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em;
+  color: var(--text-faint); text-transform: uppercase;
+}
+.footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer-links a {
+  color: var(--text-muted); text-decoration: none;
+  font-size: 12px;
+  transition: color 0.18s ease;
+}
+.footer-links a:hover { color: var(--gold-bright); }
+@media (max-width:600px){
+  .site-footer { padding: 18px 16px; }
+  .footer-left { font-size: 9px; }
+}
+
+/* ============================================================
    ADSENSE SLOTS
    ============================================================ */
 .ad-slot {
@@ -1113,7 +1193,30 @@ h1 {
 
   <div class="view" id="view-news"></div>
   <div class="view hidden" id="view-leagues"></div>
+
+  <!-- ============= FOOTER ============= -->
+  <footer class="site-footer">
+    <div class="footer-left">© 2026 MERCATO MAESTRO · TRANSFER INTELLIGENCE</div>
+    <nav class="footer-links" aria-label="Link legali">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="cookies.html">Cookie Policy</a>
+      <a href="#" onclick="resetCookieConsent(); return false;">Modifica preferenze cookie</a>
+    </nav>
+  </footer>
 </main>
+
+<!-- ============= COOKIE BANNER GDPR ============= -->
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Consenso cookie">
+  <div class="cookie-banner-text">
+    🍪 <strong>Utilizziamo cookie</strong> per migliorare la tua esperienza, mostrarti contenuti pertinenti e visualizzare annunci personalizzati tramite Google AdSense.
+    <br/>
+    Per maggiori dettagli leggi la nostra <a href="cookies.html">Cookie Policy</a> e <a href="privacy.html">Privacy Policy</a>.
+  </div>
+  <div class="cookie-banner-actions">
+    <button class="cookie-btn reject" onclick="setCookieConsent('reject')">Rifiuta non essenziali</button>
+    <button class="cookie-btn accept" onclick="setCookieConsent('accept')">Accetta tutti</button>
+  </div>
+</div>
 
 <!-- ============= MODAL ============= -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
@@ -1128,10 +1231,36 @@ h1 {
 <script>
 /* ================================================================
    MERCATO MAESTRO · core script
-   - news.json: feed esterno (invariato)
-   - Tab Giocatori/Squadre/Competizioni: live search via Transfermarkt
-   - Click su nome → modal popup con dati live
    ================================================================ */
+
+/* ============================
+   COOKIE CONSENT (GDPR)
+   ============================ */
+const CONSENT_KEY = 'mm_consent';
+function getCookieConsent() {
+  try { return JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null'); } catch (e) { return null; }
+}
+function setCookieConsent(choice) {
+  const data = { choice, date: new Date().toISOString() };
+  localStorage.setItem(CONSENT_KEY, JSON.stringify(data));
+  document.getElementById('cookie-banner').classList.remove('show');
+  // Configura AdSense in base alla scelta
+  if (choice === 'reject' && window.adsbygoogle) {
+    // AdSense mostrerà comunque ads, ma non-personalizzati
+    (adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds = 1;
+  }
+}
+function resetCookieConsent() {
+  localStorage.removeItem(CONSENT_KEY);
+  document.getElementById('cookie-banner').classList.add('show');
+}
+function initCookieBanner() {
+  if (!getCookieConsent()) {
+    setTimeout(() => document.getElementById('cookie-banner').classList.add('show'), 800);
+  } else if (getCookieConsent().choice === 'reject') {
+    (window.adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds = 1;
+  }
+}
 
 /* ============================
    ENTITÀ AUTO-LINK
@@ -1427,6 +1556,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setTab('news');
   loadNews();
+  initCookieBanner();
 });
 
 /* ============================
