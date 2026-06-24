@@ -2017,11 +2017,6 @@ function setTab(tab) {
     news:      { h:'Transfer Wire',  ph:"Cerca nelle news: 'Tonali', 'Real Madrid'…" },
     favorites: { h:'I Tuoi Preferiti', ph:"Cerca tra i preferiti…" }
   }[tab];
-  }[tab];
-  document.getElementById('topbar-heading').textContent = cfg.h;
-  document.getElementById('search').placeholder = cfg.ph;
-  document.getElementById('search').value = '';
-  searchQuery = '';
 
   // sort options
   const sort = document.getElementById('sort');
