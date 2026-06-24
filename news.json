@@ -1,5 +1,126 @@
 [
   {
+    "id": 49,
+    "title": "Worries exposed for England as Kane looks lost and...",
+    "link": "https://www.espn.com/soccer/story/_/id/49157690/england-scoreless-draw-ghana-exposes-world-cup-run-worries",
+    "source": "ESPN FC",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "England's stats vs. Ghana were dominant -- more possession, more shots, more passes -- but the goals never came, raising concerns for this World Cup."
+  },
+  {
+    "id": 50,
+    "title": "VAR review: Why England were lucky not to concede ...",
+    "link": "https://www.espn.com/soccer/story/_/id/49027532/world-cup-2026-var-review-red-card-penalty-handball-goal-line-technology",
+    "source": "ESPN FC",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "We examine major incidents and explain the process in terms of VAR protocol and the laws of the game."
+  },
+  {
+    "id": 51,
+    "title": "Ghana: 'VAR went for coffee' to aid 'lucky' Englan...",
+    "link": "https://www.espn.com/soccer/story/_/id/49159828/ghana-england-2026-world-cup-penalty-carlos-queiroz",
+    "source": "ESPN FC",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "Ghana boss Carlos Queiroz joked that the video assistant referee must have gone for a coffee after saying England escaped a penalty and red card in Tuesday's goalless World Cup stalemate."
+  },
+  {
+    "id": 52,
+    "title": "Ronaldo snaps goal drought, 1st to score at 6 WCs",
+    "link": "https://www.espn.com/soccer/story/_/id/49154970/portugal-cristiano-ronaldo-goal-first-score-six-world-cups-uzbekistan",
+    "source": "ESPN FC",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "Cristiano Ronaldo made history Tuesday by becoming the first player to score in six different World Cups, finding the net in Portugal's 5-0 win over Uzbekistan."
+  },
+  {
+    "id": 53,
+    "title": "Pochettino: USMNT complacency was a 'big punch'",
+    "link": "https://www.espn.com/soccer/story/_/id/49162699/pochettino-admits-naive-usmnt-culture-2024-arrival-world-cup-2026",
+    "source": "ESPN FC",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "USMNT coach Mauricio Pochettino admitted he felt 'naïve' about the program's complacency when he took over in 2024, but his efforts to transform the team have paid off with a dominant start to the 2026 World Cup."
+  },
+  {
+    "id": 54,
+    "title": "Alineación probable de Marruecos - Haití en el Mundial: once del partido de la fase de grupos",
+    "link": "https://www.marca.com/futbol/mundial/2026/06/24/alineacion-probable-marruecos-haiti-mundial-once-partido-fase-grupos.html",
+    "source": "Marca",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "Ouahbi apunta a repetir once por tercer partido consecutivo, mientras que Isidor podría regresar en Haití"
+  },
+  {
+    "id": 55,
+    "title": "Así fue el regreso de Doku a la concentración belga tras el nacimiento de su hijo",
+    "link": "https://www.marca.com/futbol/mundial/2026/06/24/asi-regreso-doku-concentracion-belga-nacimiento-hij-video.html",
+    "source": "Marca",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": ""
+  },
+  {
+    "id": 56,
+    "title": "Aritz Elustondo, muy cerca del Paok Salónica",
+    "link": "https://www.marca.com/futbol/real-sociedad/2026/06/24/aritz-elustondo-cerca-paok-salonica.html",
+    "source": "Marca",
+    "date": "24/06/2026 09:05",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "El central de Beasain, al que la Real decidió no renovar, ultima su nuevo contrato con el conjunto griego que va a dirigir el ex de Osasuna Alessio Lisci"
+  },
+  {
+    "id": 46,
+    "title": "Spezia, Angelozzi punta su Gorgone in panchina: hanno già lavorato assieme a Frosinone",
+    "link": "https://www.tuttomercatoweb.com/serie-c/spezia-angelozzi-punta-gorgone-panchina-lavorato-assieme-frosinone-2247089",
+    "source": "Tuttomercatoweb",
+    "date": "24/06/2026 09:04",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "Sfumato Marco Turati, che si accaserà in Serie B al Catanzaro, lo Spezia del neo dirigente Guido Angelozzi ha virato sul profilo di Giorgio Gorgone per ripartire dalla Serie C nella prossima stagione e puntare alla promozione."
+  },
+  {
+    "id": 47,
+    "title": "La prima volta di Tiziana Alla: una donna il tabù delle telecronache di squadre maschili",
+    "link": "https://www.tuttomercatoweb.com/mondiali-2026/tiziana-alla-donna-tabu-telecronache-squadre-maschili-2247090",
+    "source": "Tuttomercatoweb",
+    "date": "24/06/2026 09:04",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "La sfida tra Inghilterra e Ghana, trasmessa dalla Rai, è entrata nella storia della televisione sportiva italiana e non per motivi che riguardano il campo."
+  },
+  {
+    "id": 48,
+    "title": "Acquafresca: \"Belotti può ancora dire la sua senza infortuni e con il sostegno della squadra\"",
+    "link": "https://www.tuttomercatoweb.com/serie-a/acquafresca-belotti-infortuni-sostegno-squadra-2247087",
+    "source": "Tuttomercatoweb",
+    "date": "24/06/2026 09:04",
+    "type": "Rumor",
+    "reliability": 70,
+    "league": null,
+    "excerpt": "Intervistato dai colleghi di TuttoCagliari."
+  },
+  {
     "id": 34,
     "title": "Allegri al Napoli, quando arriva l'annuncio? Oggi De Laurentiis torna dagli USA",
     "link": "https://www.tuttomercatoweb.com/serie-a/allegri-napoli-arriva-l-annuncio-de-laurentiis-torna-usa-2247088",
@@ -427,80 +548,5 @@
     "reliability": 70,
     "league": null,
     "excerpt": "El centrocampista del Burgos y el atacante del Deportivo tienen conversaciones muy avanzadas con el club pepinero. Andrés Pardo acelera dos incorporaciones estratégicas."
-  },
-  {
-    "id": 31,
-    "title": "Rio Ferdinand estalla tras el doblete de Cristiano Ronaldo: \"¡A los que odian: ¡cállense!\"",
-    "link": "https://www.marca.com/futbol/mundial/2026/06/24/rio-ferdinand-estalla-doblete-cristiano-ronaldo-odian-callense.html",
-    "source": "Marca",
-    "date": "24/06/2026 08:27",
-    "type": "Rumor",
-    "reliability": 70,
-    "league": null,
-    "excerpt": "El exdefensor llenó de elogios a Cristiano en X después de verle marcar ante Uzbekistán con Portugal en el Mundial&nbsp;<span class=\"\" contenteditable=\"false\" tabindex=\"-1\"></span><span class=\"xai-icon\" contenteditable=\"false\" tabindex=\"-1\"></span>"
-  },
-  {
-    "id": 32,
-    "title": "Órdago de BlueBay tras el ascenso: \"Queremos poner al Málaga al nivel de los dos clubes grandes de Madrid\"",
-    "link": "https://www.marca.com/futbol/malaga/2026/06/24/ordago-bluebay-ascenso-queremos-poner-malaga-nivel-dos-clubes-grandes-madrid.html",
-    "source": "Marca",
-    "date": "24/06/2026 08:27",
-    "type": "Rumor",
-    "reliability": 70,
-    "league": null,
-    "excerpt": "Promesa de 600 millones de euros de inversión<span class=\"xai-icon\" contenteditable=\"false\" tabindex=\"-1\"></span>"
-  },
-  {
-    "id": 33,
-    "title": "Brasil 2027 activa la cuenta atrás",
-    "link": "https://www.marca.com/futbol/futbol-femenino/mundial/2026/06/24/brasil-2027-activa-cuenta-atras.html",
-    "source": "Marca",
-    "date": "24/06/2026 08:27",
-    "type": "Rumor",
-    "reliability": 70,
-    "league": null,
-    "excerpt": "El país sudamericano albergará el décimo Mundial femenino de fútbol de la historia que arranca en un año"
-  },
-  {
-    "id": "demo-3",
-    "title": "Rumor: la hero section è una scena viva",
-    "type": "rumor",
-    "league": "la-liga",
-    "date": "2026-02-03T11:00:00Z",
-    "source": "Mercato Maestro",
-    "source_url": "https://mercato-maestro.github.io/",
-    "summary": "Anteprima del layout editoriale con palette Carbone + Oro Champagne.",
-    "player": "Lamine Yamal",
-    "club_from": "Barcellona",
-    "club_to": "PSG",
-    "reliability": 45
-  },
-  {
-    "id": "demo-2",
-    "title": "Setup completo: dark/light mode + PWA installabile",
-    "type": "negotiation",
-    "league": "premier-league",
-    "date": "2026-02-03T10:00:00Z",
-    "source": "Mercato Maestro",
-    "source_url": "https://mercato-maestro.github.io/",
-    "summary": "Demo: testa il toggle tema e l'installazione PWA dal menu del browser.",
-    "player": "Demo Player",
-    "club_from": "Manchester United",
-    "club_to": "Real Madrid",
-    "reliability": 75
-  },
-  {
-    "id": "demo-1",
-    "title": "Benvenuto su Mercato Maestro",
-    "type": "official",
-    "league": "serie-a",
-    "date": "2026-02-03T09:00:00Z",
-    "source": "Mercato Maestro",
-    "source_url": "https://mercato-maestro.github.io/",
-    "summary": "Il nuovo aggregatore di calciomercato italiano è online. Notizie aggiornate in tempo reale dai migliori portali.",
-    "player": "—",
-    "club_from": "—",
-    "club_to": "—",
-    "reliability": 100
   }
 ]
