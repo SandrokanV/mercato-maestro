@@ -1454,15 +1454,13 @@ h1 {
           <div class="item"><span class="num">24/7</span><span class="lbl">Aggiornamento</span></div>
         </div>
       </div>
-      <img class="hero-logo" src="logo.png" alt="Mercato Maestro" width="140" height="140" />
     </div>
   </section>
 
-  <nav class="tabs" role="navigation" aria-label="Sezioni principali">
-    <button class="tab active" data-tab="news">📰 News <span class="tab-count" id="tc-news">0</span></button>
-    <button class="tab" data-tab="favorites">⭐ Preferiti <span class="tab-count" id="tc-fav">0</span></button>
-    <button class="tab" data-tab="leagues">🏆 Competizioni</button>
-  </nav>
+ <nav class="tabs" role="navigation" aria-label="Sezioni principali">
+  <button class="tab active" data-tab="news">📰 News <span class="tab-count" id="tc-news">0</span></button>
+  <button class="tab" data-tab="favorites">⭐ Preferiti <span class="tab-count" id="tc-fav">0</span></button>
+</nav>
 
   <div class="toolbar">
     <div class="search-wrap">
@@ -1485,7 +1483,6 @@ h1 {
 
   <div class="view" id="view-news"></div>
   <div class="view hidden" id="view-favorites"></div>
-  <div class="view hidden" id="view-leagues"></div>
 
   <!-- ============= FOOTER ============= -->
   <footer class="site-footer">
@@ -1855,44 +1852,6 @@ function srcStyle(s) {
   return sourceStyles[s] || { bg: 'var(--border-strong)', fg: 'var(--gold-bright)', initials: (s||'??').substring(0,2).toUpperCase() };
 }
 
-/* ============================
-   COMPETIZIONI · dataset curato
-   (statico: solo per la lista in Competizioni → poi click apre TM)
-   ============================ */
-const COMPETITIONS = [
-  // Europa - Top 5
-  { id:'GB1', name:'Premier League',                country:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', continent:'europe', clubs:20, level:'1° div.', flag:'⚽' },
-  { id:'IT1', name:'Serie A',                       country:'🇮🇹', continent:'europe', clubs:20, level:'1° div.', flag:'⚽' },
-  { id:'ES1', name:'La Liga',                       country:'🇪🇸', continent:'europe', clubs:20, level:'1° div.', flag:'⚽' },
-  { id:'L1',  name:'Bundesliga',                    country:'🇩🇪', continent:'europe', clubs:18, level:'1° div.', flag:'⚽' },
-  { id:'FR1', name:'Ligue 1',                       country:'🇫🇷', continent:'europe', clubs:18, level:'1° div.', flag:'⚽' },
-  // Europa - Top altri
-  { id:'NL1', name:'Eredivisie',                    country:'🇳🇱', continent:'europe', clubs:18, level:'1° div.', flag:'⚽' },
-  { id:'PO1', name:'Primeira Liga',                 country:'🇵🇹', continent:'europe', clubs:18, level:'1° div.', flag:'⚽' },
-  { id:'BE1', name:'Pro League',                    country:'🇧🇪', continent:'europe', clubs:16, level:'1° div.', flag:'⚽' },
-  { id:'TR1', name:'Süper Lig',                     country:'🇹🇷', continent:'europe', clubs:20, level:'1° div.', flag:'⚽' },
-  { id:'SC1', name:'Scottish Premiership',          country:'🏴󠁧󠁢󠁳󠁣󠁴󠁿', continent:'europe', clubs:12, level:'1° div.', flag:'⚽' },
-  { id:'A1',  name:'Bundesliga (Austria)',          country:'🇦🇹', continent:'europe', clubs:12, level:'1° div.', flag:'⚽' },
-  { id:'C1',  name:'Champions League',              country:'🇪🇺', continent:'europe', clubs:36, level:'UEFA', flag:'🏆' },
-  { id:'EL',  name:'Europa League',                 country:'🇪🇺', continent:'europe', clubs:36, level:'UEFA', flag:'🥈' },
-  { id:'UCOL',name:'Conference League',             country:'🇪🇺', continent:'europe', clubs:36, level:'UEFA', flag:'🥉' },
-  { id:'IT2', name:'Serie B',                       country:'🇮🇹', continent:'europe', clubs:20, level:'2° div.', flag:'⚽' },
-  { id:'GB2', name:'Championship',                  country:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', continent:'europe', clubs:24, level:'2° div.', flag:'⚽' },
-  // Sud America
-  { id:'BRA1',name:'Brasileirão Série A',           country:'🇧🇷', continent:'south-america', clubs:20, level:'1° div.', flag:'⚽' },
-  { id:'AR1N',name:'Liga Profesional',              country:'🇦🇷', continent:'south-america', clubs:28, level:'1° div.', flag:'⚽' },
-  { id:'COLP',name:'Liga BetPlay',                  country:'🇨🇴', continent:'south-america', clubs:20, level:'1° div.', flag:'⚽' },
-  { id:'CLPD',name:'Primera División Cile',         country:'🇨🇱', continent:'south-america', clubs:16, level:'1° div.', flag:'⚽' },
-  { id:'CLI', name:'Copa Libertadores',             country:'🌎', continent:'south-america', clubs:32, level:'CONMEBOL', flag:'🏆' },
-  // Resto del mondo
-  { id:'SA1', name:'Saudi Pro League',              country:'🇸🇦', continent:'other', clubs:18, level:'1° div.', flag:'⚽' },
-  { id:'MLS1',name:'Major League Soccer',           country:'🇺🇸', continent:'other', clubs:29, level:'1° div.', flag:'⚽' },
-  { id:'MEX1',name:'Liga MX',                       country:'🇲🇽', continent:'other', clubs:18, level:'1° div.', flag:'⚽' },
-  { id:'JP1', name:'J1 League',                     country:'🇯🇵', continent:'other', clubs:20, level:'1° div.', flag:'⚽' },
-  { id:'AUS1',name:'A-League',                      country:'🇦🇺', continent:'other', clubs:12, level:'1° div.', flag:'⚽' },
-  { id:'EGY1',name:'Egyptian Premier League',       country:'🇪🇬', continent:'other', clubs:18, level:'1° div.', flag:'⚽' },
-  { id:'ARG3',name:'Liga MAE',                      country:'🇦🇪', continent:'other', clubs:14, level:'1° div.', flag:'⚽' }
-];
 
 /* ============================
    HELPERS GENERALI
@@ -2048,16 +2007,16 @@ function setTab(tab) {
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
 
   document.getElementById('filters-news').classList.toggle('hidden',    tab !== 'news' && tab !== 'favorites');
-  document.getElementById('filters-leagues').classList.toggle('hidden', tab !== 'leagues');
+  // Rimuovi questa riga: document.getElementById('filters-leagues').classList.toggle('hidden', tab !== 'leagues');
 
   document.getElementById('view-news').classList.toggle('hidden',      tab !== 'news');
   document.getElementById('view-favorites').classList.toggle('hidden', tab !== 'favorites');
-  document.getElementById('view-leagues').classList.toggle('hidden',   tab !== 'leagues');
+  // Rimuovi questa riga: document.getElementById('view-leagues').classList.toggle('hidden',   tab !== 'leagues');
 
   const cfg = {
     news:      { h:'Transfer Wire',  ph:"Cerca nelle news: 'Tonali', 'Real Madrid'…" },
-    favorites: { h:'I Tuoi Preferiti', ph:"Cerca tra i preferiti…" },
-    leagues:   { h:'Competizioni',   ph:"Cerca una competizione…" }
+    favorites: { h:'I Tuoi Preferiti', ph:"Cerca tra i preferiti…" }
+  }[tab];
   }[tab];
   document.getElementById('topbar-heading').textContent = cfg.h;
   document.getElementById('search').placeholder = cfg.ph;
@@ -2100,13 +2059,7 @@ function renderStats() {
       <div class="stat"><div class="stat-v green">${off}</div><div class="stat-l">Ufficiali</div></div>
       <div class="stat"><div class="stat-v amber">${neg}</div><div class="stat-l">Trattative</div></div>
       <div class="stat"><div class="stat-v">${rum}</div><div class="stat-l">Rumors</div></div>`;
-  } else {
-    bar.innerHTML = `
-      <div class="stat"><div class="stat-v gold">${COMPETITIONS.length}</div><div class="stat-l">Competizioni</div></div>
-      <div class="stat"><div class="stat-v green">${COMPETITIONS.filter(c=>c.continent==='europe').length}</div><div class="stat-l">Europa</div></div>
-      <div class="stat"><div class="stat-v amber">${COMPETITIONS.filter(c=>c.continent==='south-america').length}</div><div class="stat-l">Sud America</div></div>
-      <div class="stat"><div class="stat-v">${COMPETITIONS.filter(c=>c.continent==='other').length}</div><div class="stat-l">Resto mondo</div></div>`;
-  }
+  } 
 }
 
 /* ============================
@@ -2159,7 +2112,6 @@ function getFilteredNews() {
 function renderActive() {
   if (activeTab === 'news')      renderNews();
   if (activeTab === 'favorites') renderFavorites();
-  if (activeTab === 'leagues')   renderLeagues();
 }
 
 function renderFavorites() {
@@ -2397,36 +2349,6 @@ function copyShareLink(url) {
 }
 
 /* ============================
-   COMPETIZIONI · lista curata
-   ============================ */
-function renderLeagues() {
-  const wrap = document.getElementById('view-leagues');
-  let list = [...COMPETITIONS];
-  if (activeContinent !== 'all') list = list.filter(c => c.continent === activeContinent);
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    list = list.filter(c => c.name.toLowerCase().includes(q));
-  }
-  if (sortMode === 'name')  list.sort((a,b) => a.name.localeCompare(b.name));
-  if (sortMode === 'clubs') list.sort((a,b) => b.clubs - a.clubs);
-
-  document.getElementById('result-count').textContent = `${list.length} competizion${list.length !== 1 ? 'i' : 'e'}`;
-  if (list.length === 0) {
-    wrap.innerHTML = emptyState('Nessuna competizione', 'Modifica il filtro continente o la ricerca.');
-    return;
-  }
-  wrap.innerHTML = `<div class="grid">${list.map((c,i) => `
-    <article class="league-card" onclick="openLeagueByTmId('${escapeHtml(c.id)}', '${escapeHtml(c.name)}')" style="animation-delay:${Math.min(i*20,300)}ms">
-      <div class="league-flag">${c.country}</div>
-      <div class="league-info">
-        <div class="league-name">${escapeHtml(c.name)}</div>
-        <div class="league-meta">${c.level} · ${c.clubs} club</div>
-      </div>
-      <div class="league-arrow">→</div>
-    </article>`).join('')}</div>`;
-}
-
-/* ============================
    ENTITY MODAL · click su nome o card
    ============================ */
 async function openEntityModal(type, name) {
@@ -2474,29 +2396,6 @@ async function openClubById(id, displayName) {
   document.getElementById('modal-body').innerHTML = renderClubModal(profile);
 }
 
-function openLeagueByTmId(tmId, name) {
-  // Apri direttamente la pagina TM della competizione
-  const url = `${TM_WEB}/wettbewerb/${tmId}`;
-  window.open(url, '_blank', 'noopener');
-}
-
-function renderLeagueModalFromName(name) {
-  const url = `${TM_WEB}/schnellsuche/ergebnis/schnellsuche?query=${encodeURIComponent(name)}&Wettbewerb_page=1`;
-  document.getElementById('modal-body').innerHTML = `
-    <div class="modal-head">
-      <div class="modal-photo" style="background: linear-gradient(135deg,#a371f7,#3d1f5f); color:#fff">🏆</div>
-      <div>
-        <div class="modal-name">${escapeHtml(name)}</div>
-        <div class="modal-sub"><span class="modal-type league">Competizione</span></div>
-      </div>
-    </div>
-    <div style="background: var(--bg-elev); border:1px solid var(--border); border-radius:8px; padding:14px; font-size:13px; color:var(--text-muted); line-height:1.55">
-      Per la <strong style="color:var(--text)">classifica completa</strong>, lo storico delle stagioni, marcatori e statistiche dettagliate, apri la pagina ufficiale Transfermarkt.
-    </div>
-    <div class="modal-foot">
-      <a class="modal-btn primary" href="${url}" target="_blank" rel="noopener">Apri su Transfermarkt →</a>
-    </div>`;
-}
 
 function renderPlayerModal(p) {
   const photo = p.imageUrl ? `<img src="${escapeHtml(p.imageUrl)}" alt="" onerror="this.outerHTML='${(p.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}'">` : (p.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
