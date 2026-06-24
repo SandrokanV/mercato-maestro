@@ -34,9 +34,7 @@ FEEDS = [
     {"name": "Goal International", "url": "https://www.goal.com/en/rss"},
     {"name": "Marca", "url": "https://www.marca.com/rss/futbol.xml"},
     {"name": "L'Equipe", "url": "https://www.lequipe.fr/rss/actu_rss.xml"},
-    {"name": "Kicker", "url": "https://www.kicker.de/news/fussball/rss.xml"},
-    {"name": "Fabrizio Romano", "url": "https://nitter.net/FabrizioRomano/rss"},
-    {"name": "David Ornstein", "url": "https://nitter.net/David_Ornstein/rss"}
+    {"name": "Kicker", "url": "https://www.kicker.de/news/fussball/rss.xml"}
 ]
 
 # ═══════════════════════════════════════════
@@ -81,7 +79,7 @@ def save_cache(data):
 
 # ═══════════════════════════════════════════
 # API FOOTBALL
-# ══════════════════════════════════════════
+# ═══════════════════════════════════════════
 def fetch_from_api(endpoint, params=None):
     if not USE_API_FOOTBALL:
         return []
@@ -246,29 +244,47 @@ def detect_league(title):
     return None
 
 def fetch_news():
-    print("\n Scaricamento news RSS...")
+    print("\n📰 Scaricamento news RSS...")
     all_news = []
     
+    # Carica news esistenti
     if os.path.exists('news.json'):
         try:
             with open('news.json', 'r', encoding='utf-8') as f:
                 all_news = json.load(f)
             print(f"  Caricate {len(all_news)} news esistenti")
-        except:
+        except Exception as e:
+            print(f"  Errore caricamento news.json: {e}")
             all_news = []
 
-    existing_links = {item['link'] for item in all_news}
+    existing_links = {item.get('link') for item in all_news if item.get('link')}
     new_count = 0
 
     for feed_info in FEEDS:
         try:
             feed = feedparser.parse(feed_info['url'])
-            print(f"  ✓ {feed_info['name']}: {len(feed.entries)} notizie")
+            print(f"  ✓ {feed_info['name']}: {len(feed.entries)} notizie trovate")
             
-            for entry in feed.entries[:3]:
+            for entry in feed.entries[:5]:  # Aumentato a 5 per fonte
+                # CONTROLLO ROBUSTO: verifica che link e title esistano
+                if not hasattr(entry, 'link') or not entry.link:
+                    print(f"    ⚠️ News senza link, salto")
+                    continue
+                
+                if not hasattr(entry, 'title') or not entry.title:
+                    print(f"    ⚠️ News senza titolo, salto")
+                    continue
+                
                 if entry.link not in existing_links:
                     news_type, reliability = classify_news(entry.title)
                     league = detect_league(entry.title)
+                    
+                    # Estrai excerpt in modo sicuro
+                    excerpt = ''
+                    if hasattr(entry, 'summary'):
+                        excerpt = entry.summary[:300]
+                    elif hasattr(entry, 'description'):
+                        excerpt = entry.description[:300]
                     
                     all_news.append({
                         'id': len(all_news) + 1,
@@ -279,16 +295,19 @@ def fetch_news():
                         'type': news_type,
                         'reliability': reliability,
                         'league': league,
-                        'excerpt': entry.get('summary', entry.get('description', ''))[:300] if hasattr(entry, 'summary') else ''
+                        'excerpt': excerpt
                     })
                     existing_links.add(entry.link)
                     new_count += 1
+                    print(f"    ✅ Aggiunta: {entry.title[:50]}...")
         except Exception as e:
-            print(f"  Errore {feed_info['name']}: {e}")
+            print(f"  ❌ Errore {feed_info['name']}: {e}")
 
+    # Ordina per data e limita a 50
     all_news.sort(key=lambda x: x['date'], reverse=True)
     all_news = all_news[:50]
 
+    # Salva
     with open('news.json', 'w', encoding='utf-8') as f:
         json.dump(all_news, f, indent=2, ensure_ascii=False)
     
@@ -299,11 +318,11 @@ def fetch_news():
 # ═══════════════════════════════════════════
 def main():
     print("=" * 50)
-    print(" MERCATO MAESTRO - Bot avviato!")
+    print("🚀 MERCATO MAESTRO - Bot avviato!")
     print("=" * 50)
     
     # DEBUG
-    print(f"\n DEBUG API:")
+    print(f"\n🔍 DEBUG API:")
     print(f"   API_FOOTBALL_KEY in env: {'API_FOOTBALL_KEY' in os.environ}")
     if API_FOOTBALL_KEY:
         print(f"   ✅ Key presente (lunghezza: {len(API_FOOTBALL_KEY)})")
@@ -352,7 +371,7 @@ def main():
                     with open('teams.json', 'w', encoding='utf-8') as f:
                         json.dump(teams, f, indent=2, ensure_ascii=False)
         except Exception as e:
-            print(f"️ Errore API: {e}")
+            print(f"⚠️ Errore API: {e}")
     else:
         print("\n⚠️ API-Football NON attivo")
     
