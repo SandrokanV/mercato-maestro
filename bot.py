@@ -81,16 +81,16 @@ def save_cache(data):
 # ═══════════════════════════════════════════
 # RIASSUNTO ARTICOLO (veloce)
 # ═══════════════════════════════════════════
-def fetch_article_summary(url, max_paragraphs=3):
+def fetch_article_summary(url, max_paragraphs=6):
     """
-    Scarica un riassunto dell'articolo (primi N paragrafi significativi)
-    max_paragraphs: numero di paragrafi da estrarre (default 3)
+    Scarica un riassunto più completo dell'articolo
+    max_paragraphs: numero di paragrafi da estrarre (default 6)
     """
     try:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
-        response = requests.get(url, headers=headers, timeout=8)
+        response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -108,7 +108,8 @@ def fetch_article_summary(url, max_paragraphs=3):
             '.article-body',
             '.post-content',
             '.entry-content',
-            'main'
+            'main',
+            '.content'
         ]
         
         for selector in selectors:
@@ -122,7 +123,7 @@ def fetch_article_summary(url, max_paragraphs=3):
             for p in article.find_all('p'):
                 text = p.get_text().strip()
                 # Filtra paragrafi troppo brevi o irrilevanti
-                if len(text) > 80 and not text.lower().startswith(('copyright', '©', 'segui', 'leggi anche')):
+                if len(text) > 50 and not any(x in text.lower() for x in ['copyright', '©', 'segui', 'leggi anche', 'iscriviti', 'subscribe']):
                     paragraphs.append(text)
                     if len(paragraphs) >= max_paragraphs:
                         break
@@ -131,15 +132,15 @@ def fetch_article_summary(url, max_paragraphs=3):
         if not paragraphs:
             for p in soup.find_all('p'):
                 text = p.get_text().strip()
-                if len(text) > 80 and len(paragraphs) < max_paragraphs:
+                if len(text) > 50 and len(paragraphs) < max_paragraphs:
                     paragraphs.append(text)
         
         # Unisci i paragrafi
         summary = '\n\n'.join(paragraphs)
         
-        # Limita a 800 caratteri totali
-        if len(summary) > 800:
-            summary = summary[:800] + '...'
+        # Limita a 1500 caratteri totali (invece di 800)
+        if len(summary) > 1500:
+            summary = summary[:1500] + '...'
         
         return summary if summary else None
         
