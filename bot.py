@@ -84,7 +84,6 @@ def save_cache(data):
 def fetch_article_summary(url, max_paragraphs=6):
     """
     Scarica un riassunto più completo dell'articolo
-    max_paragraphs: numero di paragrafi da estrarre (default 6)
     """
     try:
         headers = {
@@ -96,7 +95,7 @@ def fetch_article_summary(url, max_paragraphs=6):
         soup = BeautifulSoup(response.content, 'html.parser')
         
         # Rimuovi elementi non necessari
-        for element in soup(['script', 'style', 'nav', 'footer', 'header', 'aside', 'iframe']):
+        for element in soup(['script', 'style', 'nav', 'footer', 'header', 'aside', 'iframe', 'form', 'noscript']):
             element.decompose()
         
         # Cerca il contenuto principale
@@ -108,6 +107,8 @@ def fetch_article_summary(url, max_paragraphs=6):
             '.article-body',
             '.post-content',
             '.entry-content',
+            '.post-body',
+            '.entry-body',
             'main',
             '.content'
         ]
@@ -117,28 +118,45 @@ def fetch_article_summary(url, max_paragraphs=6):
             if article:
                 break
         
+        # Se non troviamo l'articolo, usa tutto il body
+        if not article:
+            article = soup.find('body')
+        
         # Estrai paragrafi significativi
         paragraphs = []
         if article:
             for p in article.find_all('p'):
+                # Usa get_text() per ottenere solo il testo pulito
                 text = p.get_text().strip()
+                
+                # Rimuovi spazi multipli e newline
+                import re
+                text = re.sub(r'\s+', ' ', text)
+                
                 # Filtra paragrafi troppo brevi o irrilevanti
-                if len(text) > 50 and not any(x in text.lower() for x in ['copyright', '©', 'segui', 'leggi anche', 'iscriviti', 'subscribe']):
+                if len(text) > 50 and not any(x in text.lower() for x in ['copyright', '©', 'segui', 'leggi anche', 'iscriviti', 'subscribe', 'cookie policy']):
                     paragraphs.append(text)
                     if len(paragraphs) >= max_paragraphs:
                         break
         
-        # Se non troviamo paragrafi nell'articolo, prendi i primi dalla pagina
+        # Se non troviamo paragrafi, prova con div o altre sezioni
         if not paragraphs:
-            for p in soup.find_all('p'):
-                text = p.get_text().strip()
-                if len(text) > 50 and len(paragraphs) < max_paragraphs:
-                    paragraphs.append(text)
+            for div in soup.find_all(['div', 'section']):
+                if div.get('class') and any('content' in str(c).lower() for c in div.get('class')):
+                    text = div.get_text().strip()
+                    text = re.sub(r'\s+', ' ', text)
+                    if len(text) > 200:
+                        # Prendi i primi 1500 caratteri
+                        paragraphs.append(text[:1500])
+                        break
         
         # Unisci i paragrafi
         summary = '\n\n'.join(paragraphs)
         
-        # Limita a 1500 caratteri totali (invece di 800)
+        # Pulizia finale
+        summary = re.sub(r'\s+', ' ', summary)  # Rimuovi spazi multipli
+        
+        # Limita a 1500 caratteri
         if len(summary) > 1500:
             summary = summary[:1500] + '...'
         
