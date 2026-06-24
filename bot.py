@@ -2,6 +2,7 @@ import feedparser
 import json
 import os
 import requests
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
 # ═══════════════════════════════════════════
@@ -76,6 +77,75 @@ def save_cache(data):
         print("✓ Cache salvata (24h)")
     except Exception as e:
         print(f"  Errore salvataggio cache: {e}")
+
+# ═══════════════════════════════════════════
+# RIASSUNTO ARTICOLO (veloce)
+# ═══════════════════════════════════════════
+def fetch_article_summary(url, max_paragraphs=3):
+    """
+    Scarica un riassunto dell'articolo (primi N paragrafi significativi)
+    max_paragraphs: numero di paragrafi da estrarre (default 3)
+    """
+    try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        response = requests.get(url, headers=headers, timeout=8)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Rimuovi elementi non necessari
+        for element in soup(['script', 'style', 'nav', 'footer', 'header', 'aside', 'iframe']):
+            element.decompose()
+        
+        # Cerca il contenuto principale
+        article = None
+        selectors = [
+            'article',
+            '[itemprop="articleBody"]',
+            '.article-content',
+            '.article-body',
+            '.post-content',
+            '.entry-content',
+            'main'
+        ]
+        
+        for selector in selectors:
+            article = soup.select_one(selector)
+            if article:
+                break
+        
+        # Estrai paragrafi significativi
+        paragraphs = []
+        if article:
+            for p in article.find_all('p'):
+                text = p.get_text().strip()
+                # Filtra paragrafi troppo brevi o irrilevanti
+                if len(text) > 80 and not text.lower().startswith(('copyright', '©', 'segui', 'leggi anche')):
+                    paragraphs.append(text)
+                    if len(paragraphs) >= max_paragraphs:
+                        break
+        
+        # Se non troviamo paragrafi nell'articolo, prendi i primi dalla pagina
+        if not paragraphs:
+            for p in soup.find_all('p'):
+                text = p.get_text().strip()
+                if len(text) > 80 and len(paragraphs) < max_paragraphs:
+                    paragraphs.append(text)
+        
+        # Unisci i paragrafi
+        summary = '\n\n'.join(paragraphs)
+        
+        # Limita a 800 caratteri totali
+        if len(summary) > 800:
+            summary = summary[:800] + '...'
+        
+        return summary if summary else None
+        
+    except Exception as e:
+        print(f"  ⚠️ Errore riassunto: {str(e)[:50]}")
+        return None
 
 # ═══════════════════════════════════════════
 # API FOOTBALL
@@ -265,8 +335,8 @@ def fetch_news():
             feed = feedparser.parse(feed_info['url'])
             print(f"  ✓ {feed_info['name']}: {len(feed.entries)} notizie trovate")
             
-            for entry in feed.entries[:5]:  # Aumentato a 5 per fonte
-                # CONTROLLO ROBUSTO: verifica che link e title esistano
+            for entry in feed.entries[:5]:
+                # CONTROLLO ROBUSTO
                 if not hasattr(entry, 'link') or not entry.link:
                     print(f"    ⚠️ News senza link, salto")
                     continue
@@ -279,12 +349,16 @@ def fetch_news():
                     news_type, reliability = classify_news(entry.title)
                     league = detect_league(entry.title)
                     
-                    # Estrai excerpt in modo sicuro
+                    # Estrai excerpt dal feed
                     excerpt = ''
                     if hasattr(entry, 'summary'):
                         excerpt = entry.summary[:300]
                     elif hasattr(entry, 'description'):
                         excerpt = entry.description[:300]
+                    
+                    # Scarica riassunto (3 paragrafi, max 800 caratteri)
+                    print(f"    📥 Download riassunto...")
+                    summary = fetch_article_summary(entry.link, max_paragraphs=3)
                     
                     all_news.append({
                         'id': len(all_news) + 1,
@@ -295,7 +369,8 @@ def fetch_news():
                         'type': news_type,
                         'reliability': reliability,
                         'league': league,
-                        'excerpt': excerpt
+                        'excerpt': excerpt,
+                        'summary': summary  # Riassunto di 3 paragrafi
                     })
                     existing_links.add(entry.link)
                     new_count += 1
